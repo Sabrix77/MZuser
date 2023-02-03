@@ -142,7 +142,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Navigator.pushReplacementNamed(
                                 context, LoginScreen.routeName);
                           },
-                          child: Text('Login now!')),
+                          child: Text(
+                            'Login now!',
+                            style: TextStyle(
+                                fontSize: 16, color: Colors.blueAccent),
+                          )),
                     ],
                   ),
                 ],

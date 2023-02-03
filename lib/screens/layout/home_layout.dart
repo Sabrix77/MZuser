@@ -67,6 +67,12 @@ class _HomeLayoutState extends State<HomeLayout> {
       AddItemScreen(),
       Container(color: Colors.redAccent),
       SettingsScreen(),
+
+      // Container(color: Colors.cyanAccent,child:Center(child: Text('Home Screen',style: TextStyle(fontSize:16),),)),
+      // Container(color: Colors.lightBlueAccent,child:Center(child: Text('Search Screen',style: TextStyle(fontSize:16),),)),
+      // Container(color: Colors.redAccent,child:Center(child: Text('Add Product',style: TextStyle(fontSize:16),),)),
+      // Container(color: Colors.yellowAccent,child:Center(child: Text('Favorites',style: TextStyle(fontSize:16),),)),
+      // Container(color: Colors.greenAccent,child:Center(child: Text('Settings',style: TextStyle(fontSize:16),),)),
     ];
   }
 

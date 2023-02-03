@@ -18,12 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
-        titleTextStyle: const TextStyle(
-            fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black),
-        //title: const Text('M-Zad'),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        elevation: 0,
+        title: Text('GoBid'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),

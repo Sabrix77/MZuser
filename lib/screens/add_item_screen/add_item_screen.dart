@@ -31,14 +31,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //
       backgroundColor: const Color(0xFFE5E5E5),
       appBar: AppBar(
-        titleTextStyle: TextStyle(
-            fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black),
         title: const Text('M-Zad'),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
