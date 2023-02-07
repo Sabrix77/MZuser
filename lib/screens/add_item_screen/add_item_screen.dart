@@ -32,7 +32,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       //
-      backgroundColor: const Color(0xFFE5E5E5),
+      backgroundColor: Colors.white10,
       appBar: AppBar(
         title: const Text('M-Zad'),
       ),

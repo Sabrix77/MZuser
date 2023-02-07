@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mzady/model/category.dart';
+import 'package:mzady/screens/product_details/product_details.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -96,56 +97,63 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisSpacing: 10,
                       childAspectRatio: 3 / 5),
                   itemBuilder: (context, index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Stack(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1, color: Colors.black45),
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Color(0xff1A524F4F),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 2,
-                                right: 2,
-                                child: InkWell(
-                                  child: Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.black12)),
-                                    child: const Icon(
-                                        Icons.favorite_border_outlined),
+                    return InkWell(
+                      onTap: () {
+                        // Navigator.pushNamed(context, ProductDetails.routeName);
+                        Navigator.of(context, rootNavigator: true)
+                            .pushNamed(ProductDetails.routeName);
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1, color: Colors.black45),
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Color(0xff1A524F4F),
                                   ),
                                 ),
-                              ),
+                                Positioned(
+                                  bottom: 2,
+                                  right: 2,
+                                  child: InkWell(
+                                    child: Container(
+                                      width: 35,
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: Colors.black12)),
+                                      child: const Icon(
+                                          Icons.favorite_border_outlined),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            demoString.length > 30
+                                ? '${demoString.substring(0, 30)}...'
+                                : demoString,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w400),
+                          ),
+                          SizedBox(height: 6),
+                          Row(
+                            children: [
+                              Text('50 LE'),
                             ],
                           ),
-                        ),
-                        SizedBox(height: 6),
-                        Text(
-                          demoString.length > 30
-                              ? '${demoString.substring(0, 30)}...'
-                              : demoString,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w400),
-                        ),
-                        SizedBox(height: 6),
-                        Row(
-                          children: [
-                            Text('50 LE'),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                      ],
+                          SizedBox(height: 12),
+                        ],
+                      ),
                     );
                   },
                 ),

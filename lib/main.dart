@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/screens/layout/home_layout.dart';
 import 'package:mzady/screens/login/login_screen.dart';
+import 'package:mzady/screens/product_details/product_details.dart';
 import 'package:mzady/screens/register/register_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (_) => LoginScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),
         HomeLayout.routeName: (_) => HomeLayout(),
+        ProductDetails.routeName: (_) => ProductDetails(),
       },
     );
   }

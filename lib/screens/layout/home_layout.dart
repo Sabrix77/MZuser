@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mzady/screens/home/home_screen.dart';
 import 'package:mzady/screens/search/search_screen.dart';
-import 'package:mzady/screens/settings/settings_screen.dart';
+import 'package:mzady/screens/settings/profile_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../add_item_screen/add_item_screen.dart';
@@ -66,7 +66,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       SearchScreen(),
       AddItemScreen(),
       Container(color: Colors.redAccent),
-      SettingsScreen(),
+      ProfileScreen(),
 
       // Container(color: Colors.cyanAccent,child:Center(child: Text('Home Screen',style: TextStyle(fontSize:16),),)),
       // Container(color: Colors.lightBlueAccent,child:Center(child: Text('Search Screen',style: TextStyle(fontSize:16),),)),
@@ -106,8 +106,8 @@ class _HomeLayoutState extends State<HomeLayout> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.settings),
-        title: ("Settings"),
+        icon: const Icon(CupertinoIcons.profile_circled),
+        title: ("Profile"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
