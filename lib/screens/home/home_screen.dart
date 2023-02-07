@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
-        title: Text('GoBid'),
+        title: const Text('GoBid'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                 height: 180,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(14),
                               border:
-                                  Border.all(width: 1, color: Colors.black26),
+                                  Border.all(width: 1, color: Colors.black12),
                             ),
                             child: Center(
                               child: Text(Category.categories[index].name,
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -80,90 +80,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           isGridview = !isGridview;
                         });
                       },
-                      icon:
-                          isGridview ? Icon(Icons.menu) : Icon(Icons.dashboard))
+                      icon: isGridview
+                          ? const Icon(Icons.menu)
+                          : const Icon(Icons.dashboard))
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Visibility(
                 visible: isGridview,
-                child: GridView.builder(
-                  itemCount: 7,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 3 / 5),
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        // Navigator.pushNamed(context, ProductDetails.routeName);
-                        Navigator.of(context, rootNavigator: true)
-                            .pushNamed(ProductDetails.routeName);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Stack(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1, color: Colors.black45),
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Color(0xff1A524F4F),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 2,
-                                  right: 2,
-                                  child: InkWell(
-                                    child: Container(
-                                      width: 35,
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: Colors.black12)),
-                                      child: const Icon(
-                                          Icons.favorite_border_outlined),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            demoString.length > 30
-                                ? '${demoString.substring(0, 30)}...'
-                                : demoString,
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(height: 6),
-                          Row(
-                            children: [
-                              Text('50 LE'),
-                            ],
-                          ),
-                          SizedBox(height: 12),
-                        ],
-                      ),
-                    );
-                  },
-                ),
                 replacement: SizedBox(
                   width: double.infinity,
                   child: ListView.separated(
                     itemCount: 7,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) => SizedBox(height: 20),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 20),
                     itemBuilder: (context, index) {
                       return SizedBox(
                         height: 250,
@@ -178,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       border: Border.all(
                                           width: 1, color: Colors.black45),
                                       borderRadius: BorderRadius.circular(12),
-                                      color: Color(0xff1A524F4F),
+                                      color: const Color(0xff1A524F4F),
                                     ),
                                   ),
                                   Positioned(
@@ -201,26 +133,109 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             Text(
                               demoString.length > 66
                                   ? '${demoString.substring(0, 65)}...'
                                   : demoString,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w400),
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             Row(
                               children: [
-                                Text('50 LE'),
+                                const Text('50 LE'),
                               ],
                             ),
-                            SizedBox(height: 12),
+                            const SizedBox(height: 12),
                           ],
                         ),
                       );
                     },
                   ),
+                ),
+                child: GridView.builder(
+                  itemCount: 7,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                      childAspectRatio: 2 / 3),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.black45),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.transparent,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                InkWell(
+                                    onTap: () => Navigator.of(context,
+                                            rootNavigator: true)
+                                        .pushNamed(ProductDetails.routeName),
+                                    child: Container(
+                                        color: const Color(0xff1A524F4F))),
+                                Positioned(
+                                  top: 4,
+                                  right: 4,
+                                  child: InkWell(
+                                    child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: Colors.black12)),
+                                      child: const Icon(
+                                        Icons.favorite_border_outlined,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () =>
+                                Navigator.of(context, rootNavigator: true)
+                                    .pushNamed(ProductDetails.routeName),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 6),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    demoString.length > 30
+                                        ? '${demoString.substring(0, 30)}...'
+                                        : demoString,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Row(
+                                    children: [
+                                      const Text('50 LE'),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
                 ),
               )
             ],

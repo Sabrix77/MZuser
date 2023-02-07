@@ -40,7 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             const Expanded(flex: 1, child: SizedBox()),
             Container(
-                width: MediaQuery.of(context).size.width * .7,
+                width: MediaQuery.of(context).size.width * .6,
                 child: Image.asset(
                   'assets/images/shopingcar.png',
                   fit: BoxFit.fill,

@@ -8,28 +8,8 @@ class HistoryUploaded extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return SizedBox(
-                height: double.infinity,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 3,
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                ),
-              );
-            });
+        Navigator.of(context, rootNavigator: true)
+            .pushNamed(UploadedScreen.routeName);
       },
       child: Container(
         color: Colors.white,
@@ -47,6 +27,25 @@ class HistoryUploaded extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class UploadedScreen extends StatelessWidget {
+  static const String routeName = 'uploadedScreen';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('GoBid'),
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      body: Container(
+          // color: Colors.redAccent,
+
+          ),
     );
   }
 }

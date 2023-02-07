@@ -34,8 +34,8 @@ class ProductDetails extends StatelessWidget {
               ),
               DraggableScrollableSheet(
                   minChildSize: .4,
-                  maxChildSize: .6,
-                  initialChildSize: .5,
+                  maxChildSize: .7,
+                  initialChildSize: .6,
                   builder: (context, scrollController) {
                     return Container(
                       width: double.infinity,
@@ -55,8 +55,8 @@ class ProductDetails extends StatelessWidget {
                           children: [
                             Divider(
                               thickness: 3,
-                              indent: 80,
-                              endIndent: 80,
+                              indent: 100,
+                              endIndent: 100,
                               color: Colors.grey[400],
                             ),
                             const SizedBox(height: 20),
@@ -159,7 +159,7 @@ class ProductDetails extends StatelessWidget {
                                 },
                               ),
                             ),
-                            SizedBox(height: 80)
+                            SizedBox(height: 40)
                           ],
                         ),
                       ),

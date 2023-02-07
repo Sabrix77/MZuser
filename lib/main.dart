@@ -4,6 +4,7 @@ import 'package:mzady/screens/layout/home_layout.dart';
 import 'package:mzady/screens/login/login_screen.dart';
 import 'package:mzady/screens/product_details/product_details.dart';
 import 'package:mzady/screens/register/register_screen.dart';
+import 'package:mzady/screens/settings/settings_sections/history_uploaded.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (_) => RegisterScreen(),
         HomeLayout.routeName: (_) => HomeLayout(),
         ProductDetails.routeName: (_) => ProductDetails(),
+        UploadedScreen.routeName: (_) => UploadedScreen(),
       },
     );
   }

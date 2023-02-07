@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mzady/screens/favorites/favorites_screen.dart';
 import 'package:mzady/screens/home/home_screen.dart';
 import 'package:mzady/screens/search/search_screen.dart';
 import 'package:mzady/screens/settings/profile_screen.dart';
@@ -65,7 +66,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       HomeScreen(),
       SearchScreen(),
       AddItemScreen(),
-      Container(color: Colors.redAccent),
+      FavoritesScreen(),
       ProfileScreen(),
 
       // Container(color: Colors.cyanAccent,child:Center(child: Text('Home Screen',style: TextStyle(fontSize:16),),)),

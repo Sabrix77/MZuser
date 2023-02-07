@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mzady/model/category.dart';
@@ -31,11 +30,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //
       backgroundColor: Colors.white10,
       appBar: AppBar(
-        title: const Text('M-Zad'),
-      ),
+        title: const Text('GoBid')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Stepper(
