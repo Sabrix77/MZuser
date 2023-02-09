@@ -8,7 +8,7 @@ import 'package:mzady/screens/settings/settings_sections/history_winning.dart';
 import 'package:mzady/screens/settings/settings_sections/language_section.dart';
 import 'package:mzady/screens/settings/settings_sections/logout_section.dart';
 import 'package:mzady/screens/settings/settings_sections/style_section.dart';
-import 'package:mzady/screens/settings/settings_sections/update_account_info.dart';
+import 'package:mzady/screens/settings/settings_sections/update_account_info/update_account_info.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -49,6 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               DeliveryPolicySection(),
               SizedBox(height: 8),
               LogoutSection(),
+              SizedBox(height: 32),
             ],
           ),
         ),

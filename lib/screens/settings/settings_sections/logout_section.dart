@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mzady/services/auth_manager.dart';
 
 import '../../login/login_screen.dart';
 
@@ -9,9 +10,10 @@ class LogoutSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed(LoginScreen.routeName);
-        // Navigator.pushNamed(context, LoginScreen.routeName);
+        ///hwa da الاسباكتي altmm
+        AuthManager.logout().then((value) =>
+            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+                LoginScreen.routeName, (route) => false));
       },
       child: Container(
         color: Colors.redAccent,

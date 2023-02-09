@@ -34,4 +34,21 @@ class AppStrings {
   static const String aboutUs = 'GoBid';
   static const String deliveryPolicy = 'GoBid';
   static const String logOut = 'GoBid';
+
+  ///firebase Error messages
+
+  static const String weakPassword = 'weak password try with another password';
+  static const String usedEmail =
+      'This Email is already in use try another one, or login';
+  static const String someThingWentWrong =
+      'Something went wrong, check your connection';
+  static const String youCantLogin =
+      'The email address or password is incorrect, try with valid ones..';
+
+  /// messages
+  static const String ok = 'Ok';
+  static const String cancel = 'Cancel';
+
+  static const String userUpdatedSuccessfully =
+      'New Information Has been Successfully Updated';
 }

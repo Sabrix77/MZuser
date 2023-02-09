@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
   int? maxLines;
   TextInputType? textInputType;
   bool obscureText;
+
   Color? borderColor;
 
   CustomTextField({

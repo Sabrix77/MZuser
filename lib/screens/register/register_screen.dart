@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mzady/base.dart';
 import 'package:mzady/screens/layout/home_layout.dart';
 import 'package:mzady/screens/login/login_screen.dart';
+import 'package:mzady/screens/register/register_navigator.dart';
+import 'package:mzady/screens/register/register_vm.dart';
 
 import '../../shared/combonent/custom_text_field.dart';
 import '../../shared/combonent/main_button.dart';
@@ -12,7 +15,8 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
+    implements RegisterNavigator {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -20,6 +24,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.navigator = this;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +56,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: CustomTextField(
                           controller: _firstNameController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your first name';
+                            if (value!.isEmpty || value.length < 3) {
+                              return 'Please Enter First Name';
                             }
                             return null;
                           },
@@ -60,12 +70,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: CustomTextField(
                           controller: _lastNameController,
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your last name';
+                            if (value!.isEmpty || value.length < 3) {
+                              return 'Please Enter Last Name';
                             }
                             return null;
                           },
-                          hint: 'Enter your last Name',
+                          hint: 'Enter your Last Name',
                           label: 'Last Name',
                         ),
                       ),
@@ -75,8 +85,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomTextField(
                     controller: _emailController,
                     validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter valid Email';
+                      final bool emailNotValid = !RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value!);
+                      if (value.isEmpty || emailNotValid) {
+                        return 'Please Enter Valid Email';
                       }
                       return null;
                     },
@@ -86,9 +99,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 16),
                   CustomTextField(
                     controller: _phoneController,
+                    textInputType: TextInputType.number,
                     validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter valid Phone number';
+                      if (value!.isEmpty || value.length != 11) {
+                        return 'Please Enter Valid Phone Number';
                       }
                       return null;
                     },
@@ -99,8 +113,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomTextField(
                     controller: _passwordController,
                     validator: (value) {
-                      if (value!.isEmpty) {
-                        return ' Please enter your password';
+                      if (value!.isEmpty || value!.length < 6) {
+                        return ' Password Should be Strong';
                       }
                       return null;
                     },
@@ -113,8 +127,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomTextField(
                     controller: _confirmController,
                     validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Confirm your Password';
+                      }
                       if (value != _passwordController.text) {
-                        return 'your password is not confirmed, try again';
+                        return 'Your Password Cant be Confirmed, try again';
                       }
                       return null;
                     },
@@ -126,9 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 40),
                   MainButton(
                     onTap: () {
-                      //if (_formKey.currentState!.validate()) {
-                      Navigator.pushNamed(context, HomeLayout.routeName);
-                      //}
+                      validForm();
                     },
                     text: 'Register',
                   ),
@@ -156,5 +171,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  RegisterViewModel initViewModel() {
+    return RegisterViewModel();
+  }
+
+  @override
+  void navigateToHome() {
+    Navigator.pushReplacementNamed(context, HomeLayout.routeName);
+  }
+
+  void validForm() {
+    if (_formKey.currentState!.validate()) {
+      viewModel.createAccount(
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        email: _emailController.text,
+        phone: _phoneController.text,
+        password: _passwordController.text,
+      );
+    }
   }
 }

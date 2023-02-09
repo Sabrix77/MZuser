@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mzady/base.dart';
+import 'package:mzady/screens/layout/home_layout.dart';
+import 'package:mzady/screens/login/login_navigator.dart';
+import 'package:mzady/screens/login/login_vm.dart';
 import 'package:mzady/screens/register/register_screen.dart';
 import 'package:mzady/shared/combonent/custom_text_field.dart';
 import 'package:mzady/shared/combonent/main_button.dart';
@@ -10,10 +14,18 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
+    implements LoginNavigator {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    //مهم
+    super.initState();
+    viewModel.navigator = this;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 32),
                   MainButton(
                     onTap: () {
-                      if (_formKey.currentState!.validate()) {}
+                      formValidator(
+                        emailController.text,
+                        passwordController.text,
+                      );
                     },
                     text: 'Login',
                   ),
@@ -95,5 +110,21 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void formValidator(String email, String password) {
+    if (_formKey.currentState!.validate()) {
+      viewModel.loginWithEmailAndPassword(email, password);
+    }
+  }
+
+  @override
+  LoginViewModel initViewModel() {
+    return LoginViewModel();
+  }
+
+  @override
+  void navigateToHome() {
+    Navigator.pushReplacementNamed(context, HomeLayout.routeName);
   }
 }
