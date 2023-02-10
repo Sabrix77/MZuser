@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:mzady/shared/constants/firebase_constants.dart';
+import 'package:path/path.dart' as path;
 
 class Task {
   String id;
@@ -10,8 +15,8 @@ class Task {
   Task.fromJson(Map<String, dynamic> json, String docID)
       : this(
           id: docID,
-          name: json['name'],
-        );
+    name: json['name'],
+  );
 
   Map<String, dynamic> toJson() {
     return {'id': id, 'name': name};
@@ -24,6 +29,17 @@ class FirebaseUtils {
   static final instance = FirebaseUtils._();
 
   final _firebase = FirebaseFirestore.instance;
+
+  ///dealing with firestorage
+  Future<String> uploadImageToFireStorage(File file) async {
+    var imgName = path.basename(file.path);
+    var refStorage =
+        FirebaseStorage.instance.ref(FirebasePaths.getImagesPath(imgName));
+    await refStorage.putFile(file);
+    String url = await refStorage.getDownloadURL();
+    print('======================url::::$url');
+    return url;
+  }
 
   Future<void> setDocument({
     required String path,
@@ -69,7 +85,7 @@ class FirebaseUtils {
       final result = snapshot.docs
           .map(
             (snap) => builder(snap.data() as Map<String, dynamic>, snap.id),
-          )
+      )
           .where((value) => value != null)
           .toList();
       if (sort != null) {

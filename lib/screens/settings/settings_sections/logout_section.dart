@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/services/auth_manager.dart';
+import 'package:provider/provider.dart';
 
 import '../../login/login_screen.dart';
 
 class LogoutSection extends StatelessWidget {
-  const LogoutSection({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    var mainProvider = Provider.of<MainProvider>(context);
+
     return InkWell(
       onTap: () {
         ///hwa da الاسباكتي altmm
-        AuthManager.logout().then((value) =>
-            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-                LoginScreen.routeName, (route) => false));
+        AuthManager.logout().then((value) {
+          mainProvider.firebaseUser = mainProvider.user = null;
+          Navigator.of(context, rootNavigator: true)
+              .pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
+        });
       },
       child: Container(
         color: Colors.redAccent,

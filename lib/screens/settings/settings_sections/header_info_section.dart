@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mzady/model/my_user.dart';
+import 'package:mzady/provider/main_provider.dart';
+import 'package:provider/provider.dart';
 
 class HeaderInfoSection extends StatelessWidget {
   const HeaderInfoSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    MyUser user = Provider.of<MainProvider>(context).user!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -23,20 +27,25 @@ class HeaderInfoSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              children: const [
+              children: [
                 Text(
                   'Hello, ',
                   style: TextStyle(fontSize: 18),
                 ),
                 Text(
-                  'Omar Muhammad',
+                  user.firstName,
+                  style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                ),
+                SizedBox(width: 2),
+                Text(
+                  user.lastName,
                   style: TextStyle(fontSize: 18, color: Colors.blueAccent),
                 ),
               ],
             ),
             const SizedBox(height: 4),
-            const Text(
-              'Banimzar-Minya',
+            Text(
+              user.address,
               style: TextStyle(color: Colors.black45),
             ),
           ],

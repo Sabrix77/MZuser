@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import '../shared/style/app_theme.dart';
 
 class MainProvider extends ChangeNotifier {
   late User? firebaseUser;
-  late MyUser user;
+  late MyUser? user;
   ThemeData myTheme = MyThemeData.lightTheme;
 
   MainProvider() {
@@ -26,21 +27,28 @@ class MainProvider extends ChangeNotifier {
   void initUser() async {
     user = await FirebaseUtils.instance
         .documentStream(
-            path: FirebasePaths.getUsersPath(firebaseUser!.uid),
-            builder: (data, docId) {
-              return MyUser.fromJson(data!, docId);
-            })
+        path: FirebasePaths.getUsersPath(firebaseUser!.uid),
+        builder: (data, docId) {
+          return MyUser.fromJson(data!, docId);
+        })
         .first;
   }
 
   void initUserManually() async {
     firebaseUser = FirebaseAuth.instance.currentUser;
-    user = await FirebaseUtils.instance
-        .documentStream(
-            path: FirebasePaths.getUsersPath(firebaseUser!.uid),
-            builder: (data, docId) {
-              return MyUser.fromJson(data!, docId);
-            })
-        .first;
+
+    var userr = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(firebaseUser!.uid)
+        .get();
+    user = MyUser.fromJson(userr.data()!, firebaseUser!.uid);
+    // notifyListeners();
+    // user = await FirebaseUtils.instance
+    //     .documentStream(
+    //         path: FirebasePaths.getUsersPath(firebaseUser!.uid),
+    //         builder: (data, docId) {
+    //           return MyUser.fromJson(data!, docId);
+    //         })
+    //     .first;
   }
 }

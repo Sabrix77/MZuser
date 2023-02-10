@@ -7,4 +7,8 @@ class FirebaseErrors {
 class FirebasePaths {
   // static const String usersPath='users';
   static String getUsersPath(String id) => 'users/$id';
+
+  static String getProductPath(String id) => 'products/$id';
+
+  static String getImagesPath(String imgName) => 'images/$imgName';
 }

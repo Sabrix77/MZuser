@@ -35,7 +35,7 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(
-        label: Text(label ?? ''),
+        label: label == null ? null : Text(label!),
         hintText: hint,
         alignLabelWithHint: true,
         prefixIcon: prefixIcon,

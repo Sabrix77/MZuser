@@ -51,4 +51,13 @@ class AppStrings {
 
   static const String userUpdatedSuccessfully =
       'New Information Has been Successfully Updated';
+  static const String itemHasUploaded =
+      'Item Successfully Uploaded, Please wait admin confirmation ';
+  static const String goHome = 'Go Home';
+  static const String uploadingImage = 'Uploading Image';
+  static const String savingDetails = 'Saving Details';
+
+  /// images
+  static const String demoImgUrl =
+      'https://thumbs.dreamstime.com/b/opened-box-icon-cartoon-style-unboxing-143587979.jpg';
 }

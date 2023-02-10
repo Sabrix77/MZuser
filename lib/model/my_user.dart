@@ -12,7 +12,7 @@ class MyUser {
     required this.lastName,
     required this.email,
     required this.phone,
-    this.address = '',
+    this.address = 'Egypt,',
   });
 
   MyUser.fromJson(Map<String, dynamic> json, String docId)

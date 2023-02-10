@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mzady/shared/combonent/utilis.dart' as utils;
 
 abstract class BaseNavigator {
-  void showLoading();
+  void showLoading({String? content});
 
   void hideDialog();
 
@@ -26,8 +26,8 @@ abstract class BaseView<T extends StatefulWidget, VM extends BaseViewModel>
   }
 
   @override
-  void showLoading() {
-    utils.showLoading(context);
+  void showLoading({String? content}) {
+    utils.showLoading(context, msg: content);
   }
 
   @override

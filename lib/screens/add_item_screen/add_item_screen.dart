@@ -1,10 +1,16 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mzady/base.dart';
 import 'package:mzady/model/category.dart';
+import 'package:mzady/provider/main_provider.dart';
+import 'package:mzady/screens/add_item_screen/add_item_navigator.dart';
+import 'package:mzady/screens/add_item_screen/add_item_vm.dart';
+import 'package:mzady/screens/layout/home_layout.dart';
 import 'package:mzady/shared/combonent/custom_text_field.dart';
+import 'package:mzady/shared/combonent/utilis.dart' as utils;
+import 'package:provider/provider.dart';
 
 class AddItemScreen extends StatefulWidget {
   const AddItemScreen({Key? key}) : super(key: key);
@@ -13,7 +19,8 @@ class AddItemScreen extends StatefulWidget {
   State<AddItemScreen> createState() => _AddItemScreenState();
 }
 
-class _AddItemScreenState extends State<AddItemScreen> {
+class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
+    implements AddItemNavigator {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
@@ -28,32 +35,52 @@ class _AddItemScreenState extends State<AddItemScreen> {
   final ImagePicker _picker = ImagePicker();
 
   @override
+  void initState() {
+    super.initState();
+    viewModel.navigator = this;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _priceController.dispose();
+    _weightController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // MyUser user=Provider.of<MainProvider>(context).user!;
     return Scaffold(
       backgroundColor: Colors.white10,
-      appBar: AppBar(
-        title: const Text('GoBid')),
+      appBar: AppBar(title: const Text('GoBid')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Stepper(
           steps: getSteps(),
           currentStep: currentStep,
           onStepContinue: () {
-            if (currentStep < getSteps().length - 1) {
+            if (currentStep < getSteps().length) {
               switch (currentStep) {
                 case 0:
+                  print('=============next 1 BUTTON PRESSSED');
+
                   if (infoForm.currentState!.validate()) {
                     currentStep++;
                     setState(() {});
                   }
                   break;
                 case 1:
+                  print('=============next 2 BUTTON PRESSSED');
+
                   currentStep++;
                   setState(() {});
                   break;
                 case 2:
-
-                  ///save to firebase
+                  print(currentStep);
+                  print('=============Upload BUTTON PRESSSED');
+                  uploadProductToFireStore();
                   break;
               }
             }
@@ -121,10 +148,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 color: Colors.blueGrey, shape: BoxShape.circle),
             child: IconButton(
               onPressed: () async {
-                final XFile? image =
+                var imagePicked =
                     await _picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  myImage = File(image.path);
+                if (imagePicked != null) {
+                  myImage = File(imagePicked.path);
                   setState(() {
                     isPicked = true;
                   });
@@ -278,5 +305,37 @@ class _AddItemScreenState extends State<AddItemScreen> {
         auctionDate = picked;
       });
     }
+  }
+
+  @override
+  AddItemViewModel initViewModel() {
+    return AddItemViewModel();
+  }
+
+  void uploadProductToFireStore() {
+    var userid = Provider.of<MainProvider>(context, listen: false).user!.id;
+
+    viewModel.addProductToFireStore(
+        title: _titleController.text,
+        description: _descriptionController.text,
+        price: int.parse(_priceController.text),
+        weight: _weightController.text,
+        category: dropDownValue,
+        endDate: auctionDate.millisecondsSinceEpoch.toString(),
+        sellerId: userid,
+        imgFile: myImage);
+  }
+
+  @override
+  void hideDialog() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void showMessage(String message, String positiveBtnTxt) {
+    utils.showMessage(context, message, positiveBtnTxt, (context) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, HomeLayout.routeName, (route) => false);
+    });
   }
 }

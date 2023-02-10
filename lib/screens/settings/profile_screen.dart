@@ -18,7 +18,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,27 +28,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: const [
-              Padding(
+            children: [
+              const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 14, vertical: 50),
                 child: HeaderInfoSection(),
               ),
-              UpdateAccountInfo(),
-              SizedBox(height: 8),
-              HistoryUploaded(),
-              SizedBox(height: 8),
-              HistoryWinning(),
-              SizedBox(height: 8),
-              StyleSection(),
-              SizedBox(height: 8),
-              LanguageSection(),
-              SizedBox(height: 8),
-              AboutSection(),
-              SizedBox(height: 8),
-              DeliveryPolicySection(),
-              SizedBox(height: 8),
+              const UpdateAccountInfo(),
+              const SizedBox(height: 8),
+              const HistoryUploaded(),
+              const SizedBox(height: 8),
+              const HistoryWinning(),
+              const SizedBox(height: 8),
+              const StyleSection(),
+              const SizedBox(height: 8),
+              const LanguageSection(),
+              const SizedBox(height: 8),
+              const AboutSection(),
+              const SizedBox(height: 8),
+              const DeliveryPolicySection(),
+              const SizedBox(height: 8),
               LogoutSection(),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
             ],
           ),
         ),

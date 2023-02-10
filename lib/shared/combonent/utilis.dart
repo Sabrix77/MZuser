@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showLoading(BuildContext context) {
+void showLoading(BuildContext context, {String? msg}) {
   showDialog(
       context: context,
       builder: (context) {
@@ -10,7 +10,7 @@ void showLoading(BuildContext context) {
             children: [
               const CircularProgressIndicator(),
               Text(
-                'Loading',
+                msg ?? 'Loading',
                 style: Theme.of(context).textTheme.subtitle1,
               )
             ],
