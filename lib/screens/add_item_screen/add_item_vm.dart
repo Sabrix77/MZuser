@@ -46,7 +46,7 @@ class AddItemViewModel extends BaseViewModel<AddItemNavigator> {
 
       navigator!.showLoading(content: AppStrings.savingDetails);
       await FirebaseUtils.instance.setDocument(
-          path: FirebasePaths.getProductPath(product.id),
+          path: FirebasePaths.setProductPath(product.id),
           data: product.toJson());
       navigator!.hideDialog();
       navigator!.showMessage(AppStrings.itemHasUploaded, AppStrings.goHome);

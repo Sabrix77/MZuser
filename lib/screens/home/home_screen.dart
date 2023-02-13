@@ -1,6 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mzady/screens/home/sections/home_top_section.dart';
-import 'package:mzady/screens/home/sections/products_view_section.dart';
+import 'package:mzady/base.dart';
+import 'package:mzady/model/category.dart';
+import 'package:mzady/screens/home/home_navigator.dart';
+import 'package:mzady/screens/home/home_vm.dart';
+import 'package:mzady/screens/home/sections/home_category_item.dart';
+import 'package:mzady/screens/home/sections/home_product_item.dart';
+import 'package:mzady/shared/combonent/shimmer_skelton.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../product_details/product_details.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -9,120 +19,235 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
+    implements HomeNavigator {
   bool isGridview = true;
-  String demoString =
-      'This is a demo descr demo descr demo desr demo descr demo descr iption for product item';
+  List<Category> categories = Category.categories.reversed.toList();
+
+  @override
+  HomeViewModel initViewModel() {
+    return HomeViewModel();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.navigator = this;
+    viewModel.getAllProductsList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white70,
-      appBar: AppBar(
-        title: const Text('GoBid'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HomeTopSection(),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    print('===========IM IN HOME Screen');
+    return RefreshIndicator(
+      onRefresh: () async {
+        viewModel.getAllProductsList();
+      },
+      child: ChangeNotifierProvider(
+        create: (_) => viewModel,
+        child: Scaffold(
+          backgroundColor: Colors.white70,
+          appBar: AppBar(
+            title: const Text('GoBid'),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Products',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.black),
+                  SizedBox(
+                    height: 180,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Categories',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5!
+                              .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                        ),
+                        Consumer<HomeViewModel>(
+                          builder: (_, homeViewModel, __) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: 130,
+                              child: ListView.separated(
+                                itemCount: categories.length,
+                                scrollDirection: Axis.horizontal,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(width: 10),
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      viewModel
+                                          .setCategory(categories[index].id);
+                                      viewModel.getProductsListByCategory(
+                                          categories[index].id);
+                                    },
+                                    child: HomeCategoryItem(
+                                        category: categories[index],
+                                        selectedCategory:
+                                            homeViewModel.selectedCategory),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isGridview = !isGridview;
-                        });
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Products',
+                        style: Theme.of(context).textTheme.headline5!.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isGridview = !isGridview;
+                            });
+                          },
+                          icon: isGridview
+                              ? const Icon(Icons.menu)
+                              : const Icon(Icons.dashboard))
+                    ],
+                  ),
+                  Visibility(
+                    visible: isGridview,
+                    replacement: SizedBox(
+                      width: double.infinity,
+                      child: testWidget(),
+                    ),
+                    child: Consumer<HomeViewModel>(
+                      builder: (_, homeViewModel, __) {
+                        if (homeViewModel.products != null) {
+                          return GridView.builder(
+                            itemCount: homeViewModel.products!.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 20,
+                              mainAxisSpacing: 20,
+                              childAspectRatio: 2 / 3,
+                            ),
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushNamed(ProductDetails.routeName);
+                                },
+                                child: HomeProductItem(
+                                    homeViewModel.products![index]),
+                              );
+                            },
+                          );
+                        }
+                        return showHomeProductShimmer();
                       },
-                      icon: isGridview
-                          ? const Icon(Icons.menu)
-                          : const Icon(Icons.dashboard))
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
-              Visibility(
-                visible: isGridview,
-                replacement: SizedBox(
-                  width: double.infinity,
-                  child: ListView.separated(
-                    itemCount: 7,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 20),
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        height: 250,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 1, color: Colors.black45),
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: const Color(0xff1A524F4F),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    bottom: 4,
-                                    right: 4,
-                                    child: InkWell(
-                                      child: Container(
-                                        width: 50,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                            border: Border.all(
-                                                color: Colors.black12)),
-                                        child: const Icon(
-                                            Icons.favorite_border_outlined),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              demoString.length > 66
-                                  ? '${demoString.substring(0, 65)}...'
-                                  : demoString,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w400),
-                            ),
-                            const SizedBox(height: 6),
-                            Row(
-                              children: [
-                                const Text('50 LE'),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                child: ProductsViewSection(),
-              ),
-              const SizedBox(height: 20),
-            ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget showHomeProductShimmer() {
+    return GridView.builder(
+      itemCount: 6,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+        childAspectRatio: 2 / 3,
+      ),
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+            baseColor: Colors.grey.withOpacity(.25),
+            highlightColor: Colors.white.withOpacity(.6),
+            child: ShimmerSkelton(
+                width: double.infinity, height: double.infinity));
+      },
+    );
+  }
+
+  Widget testWidget() {
+    return ListView.separated(
+      itemCount: 7,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      separatorBuilder: (context, index) => const SizedBox(height: 20),
+      itemBuilder: (context, index) {
+        return SizedBox(
+          height: 250,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.black45),
+                        borderRadius: BorderRadius.circular(12),
+                        color: const Color(0xff1A524F4F),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 4,
+                      right: 4,
+                      child: InkWell(
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black12)),
+                          child: const Icon(Icons.favorite_border_outlined),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(''
+                  // demoString.length > 66
+                  //     ? '${demoString.substring(0, 65)}...'
+                  //     : demoString,
+                  // style: const TextStyle(
+                  //     fontSize: 18, fontWeight: FontWeight.w400),
+                  ),
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  const Text('50 LE'),
+                ],
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        );
+      },
     );
   }
 }

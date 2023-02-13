@@ -29,7 +29,7 @@ class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
         phone: phone,
       );
       await FirebaseUtils.instance.setDocument(
-          path: FirebasePaths.getUsersPath(user.id), data: user.toJson());
+          path: FirebasePaths.setUserPath(user.id), data: user.toJson());
       //end of saving user in firestore
 
       navigator!.hideDialog();

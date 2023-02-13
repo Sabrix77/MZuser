@@ -43,7 +43,7 @@ class UpdateAccountViewModel extends BaseViewModel<UpdateAccountNavigator> {
       //   });
       // }
       FirebaseUtils.instance.setDocument(
-          path: FirebasePaths.getUsersPath(oldUser.id), data: newUser.toJson());
+          path: FirebasePaths.setUserPath(oldUser.id), data: newUser.toJson());
       navigator!.hideDialog();
       navigator!.showMessage(AppStrings.userUpdatedSuccessfully, AppStrings.ok);
     } catch (e) {

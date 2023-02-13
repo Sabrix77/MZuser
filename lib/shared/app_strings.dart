@@ -14,6 +14,7 @@ class AppStrings {
   static const String category = 'GoBid';
   static const String products = 'GoBid';
   static const String productInfo = 'GoBid';
+  static const String pounds = 'LE';
 
   ///searchScreen
   static const String searchLabel = 'GoBid';

@@ -34,7 +34,7 @@ class FirebaseUtils {
   Future<String> uploadImageToFireStorage(File file) async {
     var imgName = path.basename(file.path);
     var refStorage =
-        FirebaseStorage.instance.ref(FirebasePaths.getImagesPath(imgName));
+        FirebaseStorage.instance.ref(FirebasePaths.setImagesPath(imgName));
     await refStorage.putFile(file);
     String url = await refStorage.getDownloadURL();
     print('======================url::::$url');

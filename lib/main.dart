@@ -15,8 +15,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ChangeNotifierProvider<MainProvider>(
-      create: (context) => MainProvider(), child: const MyApp()));
+  print('=======main func');
+  runApp(
+    ChangeNotifierProvider<MainProvider>(
+      create: (context) => MainProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mainProvider = Provider.of<MainProvider>(context);
+    print('===============Material');
     return MaterialApp(
       title: 'GoBid',
       debugShowCheckedModeBanner: false,

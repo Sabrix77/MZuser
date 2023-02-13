@@ -320,7 +320,7 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
         description: _descriptionController.text,
         price: int.parse(_priceController.text),
         weight: _weightController.text,
-        category: dropDownValue,
+        category: dropDownValue.toLowerCase(),
         endDate: auctionDate.millisecondsSinceEpoch.toString(),
         sellerId: userid,
         imgFile: myImage);

@@ -6,9 +6,12 @@ class FirebaseErrors {
 
 class FirebasePaths {
   // static const String usersPath='users';
-  static String getUsersPath(String id) => 'users/$id';
+  static String setUserPath(String id) => 'users/$id';
 
-  static String getProductPath(String id) => 'products/$id';
+  static String setProductPath(String id) => 'products/$id';
 
-  static String getImagesPath(String imgName) => 'images/$imgName';
+  static String setImagesPath(String imgName) => 'images/$imgName';
+
+  static String usersPath = 'users/';
+  static String productsPath = 'products/';
 }
