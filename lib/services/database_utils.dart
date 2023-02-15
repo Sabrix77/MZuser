@@ -12,6 +12,11 @@ class DatabaseUtils {
         );
   }
 
+  static setProductToFirestore(Product product) async {
+    var ref = getProductCollectionRef();
+    return await ref.doc(product.id).set(product);
+  }
+
   static Future<List<Product>> getAllProductsList() async {
     try {
       var ref = getProductCollectionRef();
@@ -38,4 +43,18 @@ class DatabaseUtils {
       throw (e);
     }
   }
+
+  static Future<Product> getProductDetailsByID(String productId) async {
+    try {
+      var ref = getProductCollectionRef();
+      DocumentSnapshot<Product> product = await ref.doc(productId).get();
+      return product.data()!;
+    } catch (e) {
+      print('=========$e');
+      throw (e);
+    }
+  }
 }
+
+///
+/// هنخزن الفايف داتا ف اللوكال زي ما مخزنينها بس لما ننافجيت من البرودكت لل للبرودكت ديتيلز هباصي ال id مش البرودكت كله

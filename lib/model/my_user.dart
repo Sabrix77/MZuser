@@ -5,6 +5,7 @@ class MyUser {
   String phone;
   String email;
   String address;
+ // List<String> favProducts;
 
   MyUser({
     required this.id,
@@ -12,6 +13,7 @@ class MyUser {
     required this.lastName,
     required this.email,
     required this.phone,
+    // required this.favProducts,
     this.address = 'Egypt,',
   });
 
@@ -22,6 +24,7 @@ class MyUser {
             lastName: json['last_name'],
             email: json['email'],
             phone: json['phone'],
+      //favProducts: json['favProducts'],
             address: json['address']);
 
   Map<String, dynamic> toJson() {
@@ -32,6 +35,7 @@ class MyUser {
       'email': email,
       'phone': phone,
       'address': address,
+      //  'favProducts': favProducts,
     };
   }
 }

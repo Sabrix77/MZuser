@@ -15,6 +15,11 @@ class LogoutSection extends StatelessWidget {
         ///hwa da الاسباكتي altmm
         AuthManager.logout().then((value) {
           mainProvider.firebaseUser = mainProvider.user = null;
+          // delete favorites Uploaded Items علشان لما يدخل تخرج ويدخل يحمل ليسته اليوزر الجديد
+          //ف الهووم اسكرين برفع ليسته بتاع الفيفروت مره واحده ,الفكره اني لما بعمل لوج اوت
+          //وادخل من اكونت تاني ف الليسته مش بتتجدد لانها بتكون مرفوعه م اليوزر الاولاني
+          // ف انا بقوله لما يعمل لوج اوت خليه ب فولس ولما يدخل تاني ف الهوم تلاقي فولس ف ترفع الليسته جديده
+          mainProvider.isDataLoaded = false;
           Navigator.of(context, rootNavigator: true)
               .pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
         });

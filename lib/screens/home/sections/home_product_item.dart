@@ -1,15 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mzady/model/local_product.dart';
 import 'package:mzady/model/product.dart';
+import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/shared/app_strings.dart';
+import 'package:provider/provider.dart';
 
-class HomeProductItem extends StatelessWidget {
+class HomeProductItem extends StatefulWidget {
   Product product;
 
   HomeProductItem(this.product);
 
   @override
+  State<HomeProductItem> createState() => _HomeProductItemState();
+}
+
+class _HomeProductItemState extends State<HomeProductItem> {
+  @override
   Widget build(BuildContext context) {
+    print('====PRODUCT ITEM SCREEN=====');
+    LocalProduct localProduct = LocalProduct(
+      id: widget.product.id,
+      title: widget.product.title,
+      date: widget.product.endDate,
+      imageUrl: widget.product.imgUrl,
+      description: widget.product.description,
+    );
+    var provider = Provider.of<MainProvider>(context);
+
+    bool isExist = provider.isProductSelected(localProduct);
+
     return Card(
       elevation: 8,
       margin: EdgeInsets.zero,
@@ -32,7 +52,7 @@ class HomeProductItem extends StatelessWidget {
                   ),
                   child: FadeInImage(
                     placeholder: AssetImage('assets/images/Loading_icon.gif'),
-                    image: NetworkImage(product.imgUrl),
+                    image: NetworkImage(widget.product.imgUrl),
                     height: double.infinity,
                     width: double.infinity,
                     fit: BoxFit.fill,
@@ -42,21 +62,28 @@ class HomeProductItem extends StatelessWidget {
                   top: 4,
                   right: 4,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      if (isExist == false) {
+                        provider.setLocalProduct(localProduct);
+                      } else {
+                        provider.deleteLocalItem(localProduct);
+                      }
+                    },
                     child: Container(
-                      width: 40,
-                      height: 40,
+                      padding: EdgeInsets.all(6),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
                           border: Border.all(color: Colors.black12)),
-                      child: const Icon(
-                        Icons.favorite_border_outlined,
-                        size: 24,
+                      child: Icon(
+                        isExist ? Icons.favorite : Icons.favorite_border,
+                        size: 26,
+                        color: isExist ? Colors.redAccent : Colors.black87,
+                        // color: provider.isProductSelected(localProduct)?Colors.red:Colors.black26,
                       ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -67,7 +94,7 @@ class HomeProductItem extends StatelessWidget {
               children: [
                 const SizedBox(height: 6),
                 Text(
-                  product.title,
+                  widget.product.title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: const TextStyle(
@@ -76,7 +103,7 @@ class HomeProductItem extends StatelessWidget {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    Text('${product.biggestBid} ${AppStrings.pounds}')
+                    Text('${widget.product.biggestBid} ${AppStrings.pounds}')
                   ],
                 ),
                 const SizedBox(height: 12),

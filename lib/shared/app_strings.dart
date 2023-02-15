@@ -57,6 +57,8 @@ class AppStrings {
   static const String goHome = 'Go Home';
   static const String uploadingImage = 'Uploading Image';
   static const String savingDetails = 'Saving Details';
+  static const String productHasDeleted =
+      'Or product has deleted by admin,\n  you can check another products';
 
   /// images
   static const String demoImgUrl =

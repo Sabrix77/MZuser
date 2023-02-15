@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mzady/screens/favorites/product_card.dart';
+import 'package:mzady/provider/main_provider.dart';
+import 'package:mzady/screens/favorites/components/product_card.dart';
+import 'package:provider/provider.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
@@ -13,23 +15,42 @@ class FavoritesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Text('My Favorites',
                 style: Theme.of(context).textTheme.headline5!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                     fontSize: 30)),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
-              child: ListView.separated(
-                itemCount: 6,
-                separatorBuilder: (context, index) => SizedBox(height: 20),
-                itemBuilder: (context, index) {
-                  return ProductCard();
+              child: Consumer<MainProvider>(
+                builder: (_, mainProvider, __) {
+                  if (mainProvider.localProducts.isEmpty) {
+                    return const Center(
+                        child: Text(
+                      'Empty Favorites List',
+                      style: TextStyle(fontSize: 20),
+                    ));
+                  } else {
+                    return ListView.separated(
+                      itemCount: mainProvider.localProducts.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 20),
+                      itemBuilder: (context, index) {
+                        return ProductCard(
+                          localProduct: mainProvider.localProducts[index],
+                          onPressed: () {
+                            mainProvider.deleteLocalItem(
+                                mainProvider.localProducts[index]);
+                          },
+                        );
+                      },
+                    );
+                  }
                 },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),

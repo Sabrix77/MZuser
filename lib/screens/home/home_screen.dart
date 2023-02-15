@@ -146,7 +146,9 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                               return InkWell(
                                 onTap: () {
                                   Navigator.of(context, rootNavigator: true)
-                                      .pushNamed(ProductDetails.routeName);
+                                      .pushNamed(ProductDetails.routeName,
+                                          arguments: homeViewModel
+                                              .products![index].id);
                                 },
                                 child: HomeProductItem(
                                     homeViewModel.products![index]),

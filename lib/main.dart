@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/screens/layout/home_layout.dart';
 import 'package:mzady/screens/login/login_screen.dart';
@@ -9,12 +11,16 @@ import 'package:mzady/screens/settings/settings_sections/history_uploaded.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
+import 'model/local_product.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Hive.registerAdapter(LocalProductAdapter());
+  await Hive.initFlutter();
+
   print('=======main func');
   runApp(
     ChangeNotifierProvider<MainProvider>(

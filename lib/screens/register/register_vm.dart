@@ -27,6 +27,7 @@ class RegisterViewModel extends BaseViewModel<RegisterNavigator> {
         lastName: lastName,
         email: email,
         phone: phone,
+        // favProducts: [],
       );
       await FirebaseUtils.instance.setDocument(
           path: FirebasePaths.setUserPath(user.id), data: user.toJson());

@@ -24,24 +24,10 @@ class UpdateAccountViewModel extends BaseViewModel<UpdateAccountNavigator> {
       email: newEmail.isNotEmpty ? newEmail : oldUser.email,
       phone: newPhone.isNotEmpty ? newPhone : oldUser.phone,
       address: newAddress.isNotEmpty ? newAddress : oldUser.address,
+      // favProducts: oldUser.favProducts,
     );
     try {
       navigator!.showLoading();
-      // if(newEmail.isNotEmpty){
-      //  fireUser.updateEmail(newEmail).then((value) {
-      //     FirebaseUtils.instance
-      //         .setDocument(
-      //       path: FirebasePaths.getUsersPath(oldUser.id),
-      //       data: newUser.toJson(),
-      //     )
-      //         .then((value) {
-      //       // navigator!.hideDialog();
-      //       navigator!
-      //           .showMessage(AppStrings.userUpdatedSuccessfully, AppStrings.ok);
-      //     });
-      //     return;
-      //   });
-      // }
       FirebaseUtils.instance.setDocument(
           path: FirebasePaths.setUserPath(oldUser.id), data: newUser.toJson());
       navigator!.hideDialog();

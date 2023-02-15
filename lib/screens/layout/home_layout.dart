@@ -25,6 +25,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   Widget build(BuildContext context) {
     var provider = Provider.of<MainProvider>(context, listen: false);
     provider.initUserManually();
+    if (provider.isDataLoaded == false) provider.getLocalProducts();
     print('=====Home layout build');
     return Scaffold(
       body: PersistentTabView(

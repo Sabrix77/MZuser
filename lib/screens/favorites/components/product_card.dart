@@ -1,48 +1,50 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mzady/model/local_product.dart';
 import 'package:mzady/screens/product_details/product_details.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({Key? key}) : super(key: key);
+  LocalProduct localProduct;
+  Function() onPressed;
+
+  ProductCard({required this.localProduct, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.of(context, rootNavigator: true)
-          .pushNamed(ProductDetails.routeName),
+          .pushNamed(ProductDetails.routeName, arguments: localProduct.id),
       child: SizedBox(
         width: double.infinity,
-        height: 130,
-// color: Colors.red,
+        height: 140,
         child: Stack(
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
-                  height: 120,
+                  height: 130,
                   child: Card(
                     elevation: 6,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Row(
                         children: [
-                          SizedBox(
-                            width: 135,
-                          ),
+                          const SizedBox(width: 135),
                           Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        'Productt title hele prohe frale solhe',
+                                        localProduct.title,
                                         //overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle1!
@@ -51,22 +53,23 @@ class ProductCard extends StatelessWidget {
                                       ),
                                     ),
                                     IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
+                                        onPressed: onPressed,
+                                        icon: const Icon(
                                           Icons.favorite,
                                           color: Colors.redAccent,
                                         ))
                                   ],
                                 ),
                                 Text(
-                                  'item description hereeeeere asf.dsm fkMEF//,.DFL ',
+                                  localProduct.description,
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context)
                                       .textTheme
                                       .subtitle2!
                                       .copyWith(color: Colors.grey),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                               ],
                             ),
                           ),
@@ -78,7 +81,7 @@ class ProductCard extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 20,
+              bottom: 30,
               left: 15,
               child: SizedBox(
                 width: 120,
@@ -86,8 +89,11 @@ class ProductCard extends StatelessWidget {
                 height: 110,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    'assets/images/logo.jpg',
+                  child: FadeInImage(
+                    placeholder: AssetImage('assets/images/Loading_icon.gif'),
+                    image: NetworkImage(localProduct.imageUrl),
+                    height: double.infinity,
+                    width: double.infinity,
                     fit: BoxFit.fill,
                   ),
                 ),
