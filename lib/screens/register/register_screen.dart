@@ -25,6 +25,9 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
 
+  bool isObscure = true;
+  bool isConfirmObscure = true;
+
   @override
   void initState() {
     super.initState();
@@ -113,15 +116,21 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                   CustomTextField(
                     controller: _passwordController,
                     validator: (value) {
-                      if (value!.isEmpty || value!.length < 6) {
+                      if (value!.isEmpty || value.length < 6) {
                         return ' Password Should be Strong';
                       }
                       return null;
                     },
                     hint: 'Enter your Password',
                     label: 'Password',
-                    obscureText: true,
-                    suffixIcon: const Icon(Icons.remove_red_eye),
+                    obscureText: isObscure,
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                        icon: Icon(Icons.remove_red_eye)),
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
@@ -135,10 +144,16 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                       }
                       return null;
                     },
-                    obscureText: true,
-                    suffixIcon: const Icon(Icons.remove_red_eye),
                     hint: 'Confirm your Password',
                     label: 'Confirm Password',
+                    obscureText: isConfirmObscure,
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isConfirmObscure = !isConfirmObscure;
+                          });
+                        },
+                        icon: const Icon(Icons.remove_red_eye)),
                   ),
                   const SizedBox(height: 40),
                   MainButton(
@@ -157,7 +172,7 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                             Navigator.pushReplacementNamed(
                                 context, LoginScreen.routeName);
                           },
-                          child: Text(
+                          child: const Text(
                             'Login now!',
                             style: TextStyle(
                                 fontSize: 16, color: Colors.blueAccent),

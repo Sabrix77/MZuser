@@ -83,7 +83,7 @@ class _ProductDetailsState
                         image: NetworkImage(productViewModel.product!.imgUrl),
                         height: MediaQuery.of(context).size.height * .6,
                         width: double.infinity,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                       Positioned(
                           top: 20,

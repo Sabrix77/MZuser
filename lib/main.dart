@@ -8,10 +8,12 @@ import 'package:mzady/screens/login/login_screen.dart';
 import 'package:mzady/screens/product_details/product_details.dart';
 import 'package:mzady/screens/register/register_screen.dart';
 import 'package:mzady/screens/settings/settings_sections/history_uploaded.dart';
+import 'package:mzady/screens/settings/settings_sections/history_winning/history_winning.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'model/local_product.dart';
+import 'screens/manage_products/mange_products.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
         HomeLayout.routeName: (_) => HomeLayout(),
         ProductDetails.routeName: (_) => ProductDetails(),
         UploadedScreen.routeName: (_) => UploadedScreen(),
+        WinningScreen.routeName: (_) => WinningScreen(),
+        ManageProductsScreen.routeName: (_) => ManageProductsScreen()
       },
     );
   }

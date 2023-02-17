@@ -5,7 +5,9 @@ class MyUser {
   String phone;
   String email;
   String address;
- // List<String> favProducts;
+  String role;
+
+  // List<String> favProducts;
 
   MyUser({
     required this.id,
@@ -15,17 +17,20 @@ class MyUser {
     required this.phone,
     // required this.favProducts,
     this.address = 'Egypt,',
+    this.role = 'user',
   });
 
   MyUser.fromJson(Map<String, dynamic> json, String docId)
       : this(
-            id: docId,
-            firstName: json['first_name'],
-            lastName: json['last_name'],
-            email: json['email'],
-            phone: json['phone'],
-      //favProducts: json['favProducts'],
-            address: json['address']);
+          id: docId,
+          firstName: json['first_name'],
+          lastName: json['last_name'],
+          email: json['email'],
+          phone: json['phone'],
+          //favProducts: json['favProducts'],
+          address: json['address'],
+          role: json['role'],
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -36,6 +41,7 @@ class MyUser {
       'phone': phone,
       'address': address,
       //  'favProducts': favProducts,
+      'role': role,
     };
   }
 }

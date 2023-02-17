@@ -16,7 +16,7 @@ class ProductDetailsViewModel extends BaseViewModel<ProductDetailsNavigator> {
           DateTime.fromMillisecondsSinceEpoch(int.parse(product!.endDate));
     } catch (e) {
       errorMessage = AppStrings.someThingWentWrong;
-      ;
+
       print('======ProductDetailsViewModel ERROR===>');
     }
     notifyListeners();

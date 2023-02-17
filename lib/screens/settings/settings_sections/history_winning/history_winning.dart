@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:mzady/base.dart';
+import 'package:mzady/provider/main_provider.dart';
+import 'package:mzady/shared/app_strings.dart';
 import 'package:provider/provider.dart';
 
-import '../../../base.dart';
-import '../../../model/product.dart';
-import '../../../provider/main_provider.dart';
-import '../../../services/database_utils.dart';
-import '../../../shared/app_strings.dart';
+import '../../../../model/product.dart';
+import '../../../../services/database_utils.dart';
 
-class HistoryUploaded extends StatefulWidget {
+class HistoryWinning extends StatefulWidget {
+  const HistoryWinning({Key? key}) : super(key: key);
+
   @override
-  State<HistoryUploaded> createState() => _HistoryUploadedState();
+  State<HistoryWinning> createState() => _HistoryWinningState();
 }
 
-class _HistoryUploadedState extends State<HistoryUploaded> {
+class _HistoryWinningState extends State<HistoryWinning> {
   @override
   Widget build(BuildContext context) {
     // var mainProvider = Provider.of<MainProvider>(context,listen: false);
@@ -22,7 +24,7 @@ class _HistoryUploadedState extends State<HistoryUploaded> {
     return InkWell(
       onTap: () {
         Navigator.of(context, rootNavigator: true)
-            .pushNamed(UploadedScreen.routeName);
+            .pushNamed(WinningScreen.routeName);
       },
       child: Container(
         color: Colors.white,
@@ -32,7 +34,7 @@ class _HistoryUploadedState extends State<HistoryUploaded> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
               Text(
-                'Uploaded Products',
+                'Wining Products',
                 style: TextStyle(fontSize: 18),
               ),
               Icon(Icons.arrow_forward_ios_outlined),
@@ -44,20 +46,31 @@ class _HistoryUploadedState extends State<HistoryUploaded> {
   }
 }
 
-class UploadedScreen extends StatefulWidget {
-  static const String routeName = 'UploadedHistory';
+class WinningScreen extends StatefulWidget {
+  static const String routeName = 'winningScreen';
 
   @override
-  State<UploadedScreen> createState() => _UploadedScreenState();
+  _WinningScreenState createState() => _WinningScreenState();
 }
 
-class _UploadedScreenState
-    extends BaseView<UploadedScreen, HistoryUploadedViewModel>
-    implements HistoryUploadedNavigator {
+class _WinningScreenState
+    extends BaseView<WinningScreen, HistoryWinningViewModel>
+    implements HistoryWinningNavigator {
+  @override
+  void initState() {
+    super.initState();
+    viewModel.navigator = this;
+  }
+
+  @override
+  HistoryWinningViewModel initViewModel() {
+    return HistoryWinningViewModel();
+  }
+
   @override
   Widget build(BuildContext context) {
     var mainProvider = Provider.of<MainProvider>(context);
-    viewModel.getProductsWitchUserUpload(mainProvider.firebaseUser!.uid);
+    viewModel.getProductWitchUserWin(mainProvider.firebaseUser!.uid);
     return ChangeNotifierProvider(
       create: (_) => viewModel,
       child: Scaffold(
@@ -69,7 +82,7 @@ class _UploadedScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Uploaded Products',
+                'Winning Products',
                 style: Theme.of(context).textTheme.headline5!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -77,31 +90,30 @@ class _UploadedScreenState
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: Consumer<HistoryUploadedViewModel>(
-                  builder: (_, uploadedVM, __) {
-                    if (uploadedVM.products.isEmpty) {
+                child: Consumer<HistoryWinningViewModel>(
+                  builder: (_, winningVM, __) {
+                    if (winningVM.products.isEmpty) {
                       return const Center(
                         child: Text(
-                          // AppStrings.winningListIsEmpty,
-                          'PLA',
+                          AppStrings.winningListIsEmpty,
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 18),
                         ),
                       );
                     }
-                    if (uploadedVM.errorMessage != null) {
+                    if (winningVM.errorMessage != null) {
                       return const Center(
                         child: Text(AppStrings.someThingWentWrong),
                       );
                     }
                     DateTime endDate;
                     return ListView.separated(
-                      itemCount: uploadedVM.products.length,
+                      itemCount: winningVM.products.length,
                       separatorBuilder: (context, index) =>
                           const SizedBox(height: 20),
                       itemBuilder: (context, index) {
                         endDate = DateTime.fromMillisecondsSinceEpoch(
-                            int.parse(uploadedVM.products[index].endDate));
+                            int.parse(winningVM.products[index].endDate));
                         return Card(
                           elevation: 8,
                           child: SizedBox(
@@ -112,7 +124,7 @@ class _UploadedScreenState
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Image.network(
-                                  uploadedVM.products[index].imgUrl,
+                                  winningVM.products[index].imgUrl,
                                   fit: BoxFit.cover,
                                   width: 120,
                                 ),
@@ -127,14 +139,14 @@ class _UploadedScreenState
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          uploadedVM.products[index].title,
+                                          winningVM.products[index].title,
                                           style: const TextStyle(fontSize: 20),
                                         ),
                                         const SizedBox(height: 8),
                                         //Text(endDate.toString().substring(0,10)),
                                         const SizedBox(height: 8),
                                         Text(
-                                            '${uploadedVM.products[index].biggestBid.toString()} LE',
+                                            '${winningVM.products[index].biggestBid.toString()} LE',
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                                 fontSize: 18,
@@ -158,25 +170,20 @@ class _UploadedScreenState
       ),
     );
   }
-
-  @override
-  HistoryUploadedViewModel initViewModel() {
-    return HistoryUploadedViewModel();
-  }
 }
 
-abstract class HistoryUploadedNavigator implements BaseNavigator {}
+abstract class HistoryWinningNavigator implements BaseNavigator {}
 
-class HistoryUploadedViewModel extends BaseViewModel<HistoryUploadedNavigator> {
+class HistoryWinningViewModel extends BaseViewModel<HistoryWinningNavigator> {
   List<Product> products = [];
   String? errorMessage;
 
-  void getProductsWitchUserUpload(String userId) async {
+  void getProductWitchUserWin(String userId) async {
     try {
       products = await DatabaseUtils.getProductsWitchUserWin(userId);
     } catch (e) {
       errorMessage = AppStrings.someThingWentWrong;
-      print('------>ERROR IN HistoryUploadingViewModel:: $e');
+      print('------>ERROR IN HistoryWinningViewModel:: $e');
     }
     notifyListeners();
   }

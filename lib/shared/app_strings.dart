@@ -59,6 +59,8 @@ class AppStrings {
   static const String savingDetails = 'Saving Details';
   static const String productHasDeleted =
       'Or product has deleted by admin,\n  you can check another products';
+  static const String winningListIsEmpty =
+      'Oops You haven\'t won any auction challenges yet.\nBid & Win ';
 
   /// images
   static const String demoImgUrl =

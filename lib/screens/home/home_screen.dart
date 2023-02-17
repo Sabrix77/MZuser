@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/model/category.dart';
+import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/screens/home/home_navigator.dart';
 import 'package:mzady/screens/home/home_vm.dart';
+import 'package:mzady/screens/home/sections/drawer_item.dart';
 import 'package:mzady/screens/home/sections/home_category_item.dart';
 import 'package:mzady/screens/home/sections/home_product_item.dart';
 import 'package:mzady/shared/combonent/shimmer_skelton.dart';
@@ -33,15 +35,18 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
   void initState() {
     super.initState();
     viewModel.navigator = this;
-    viewModel.getAllProductsList();
+    viewModel.getAllConfirmedProducts();
   }
 
   @override
   Widget build(BuildContext context) {
+    var mainProvider = Provider.of<MainProvider>(context);
+    print('=====================>${mainProvider.user?.role}');
+
     print('===========IM IN HOME Screen');
     return RefreshIndicator(
       onRefresh: () async {
-        viewModel.getAllProductsList();
+        viewModel.getAllConfirmedProducts();
       },
       child: ChangeNotifierProvider(
         create: (_) => viewModel,
@@ -49,7 +54,9 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
           backgroundColor: Colors.white70,
           appBar: AppBar(
             title: const Text('GoBid'),
+            iconTheme: IconThemeData(color: Colors.blue),
           ),
+          drawer: mainProvider.user?.role == 'admin' ? DrawerItem() : null,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SingleChildScrollView(
@@ -68,8 +75,8 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                               .textTheme
                               .headline5!
                               .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
                         ),
                         Consumer<HomeViewModel>(
                           builder: (_, homeViewModel, __) {
@@ -80,7 +87,7 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                                 itemCount: categories.length,
                                 scrollDirection: Axis.horizontal,
                                 separatorBuilder: (context, index) =>
-                                    const SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     onTap: () {
@@ -92,7 +99,7 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                                     child: HomeCategoryItem(
                                         category: categories[index],
                                         selectedCategory:
-                                            homeViewModel.selectedCategory),
+                                        homeViewModel.selectedCategory),
                                   );
                                 },
                               ),
@@ -130,33 +137,40 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                     ),
                     child: Consumer<HomeViewModel>(
                       builder: (_, homeViewModel, __) {
-                        if (homeViewModel.products != null) {
-                          return GridView.builder(
-                            itemCount: homeViewModel.products!.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 20,
-                              mainAxisSpacing: 20,
-                              childAspectRatio: 2 / 3,
-                            ),
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pushNamed(ProductDetails.routeName,
-                                          arguments: homeViewModel
-                                              .products![index].id);
-                                },
-                                child: HomeProductItem(
-                                    homeViewModel.products![index]),
-                              );
-                            },
+                        if (homeViewModel.products == null) {
+                          return showHomeProductShimmer();
+                        }
+                        if (homeViewModel.products!.isEmpty) {
+                          //change this ui
+                          return Center(
+                            child: Text('It seem that No products yet'),
                           );
                         }
-                        return showHomeProductShimmer();
+
+                        return GridView.builder(
+                          itemCount: homeViewModel.products!.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                            childAspectRatio: .75,
+                          ),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .pushNamed(ProductDetails.routeName,
+                                        arguments:
+                                            homeViewModel.products![index].id);
+                              },
+                              child: HomeProductItem(
+                                  homeViewModel.products![index]),
+                            );
+                          },
+                        );
                       },
                     ),
                   ),
@@ -179,7 +193,7 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
         crossAxisCount: 2,
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
-        childAspectRatio: 2 / 3,
+        childAspectRatio: .75,
       ),
       itemBuilder: (context, index) {
         return Shimmer.fromColors(

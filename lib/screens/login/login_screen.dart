@@ -19,6 +19,7 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool isObscure = true;
 
   @override
   void initState() {
@@ -68,8 +69,14 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
                     },
                     hint: 'Enter your Password',
                     label: 'Password',
-                    obscureText: true,
-                    suffixIcon: const Icon(Icons.remove_red_eye),
+                    obscureText: isObscure,
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                        icon: Icon(Icons.remove_red_eye)),
                   ),
                   const SizedBox(height: 18),
                   // const Text(
@@ -96,7 +103,7 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
                             Navigator.pushReplacementNamed(
                                 context, RegisterScreen.routeName);
                           },
-                          child: Text(
+                          child: const Text(
                             'Register now!',
                             style: TextStyle(
                                 fontSize: 16, color: Colors.blueAccent),

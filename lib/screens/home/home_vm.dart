@@ -26,9 +26,9 @@ class HomeViewModel extends BaseViewModel<HomeNavigator> {
   // }
   List<Product>? products;
 
-  void getAllProductsList() async {
+  void getAllConfirmedProducts() async {
     try {
-      products = await DatabaseUtils.getAllProductsList();
+      products = await DatabaseUtils.getSelectedProductsList(confirmed: true);
     } catch (e) {
       print('=============$e');
     }

@@ -5,9 +5,9 @@ import 'package:mzady/screens/product_details/product_details.dart';
 
 class ProductCard extends StatelessWidget {
   LocalProduct localProduct;
-  Function() onPressed;
+  Function()? onPressed;
 
-  ProductCard({required this.localProduct, required this.onPressed});
+  ProductCard({required this.localProduct, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +52,15 @@ class ProductCard extends StatelessWidget {
                                                 fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    IconButton(
-                                        onPressed: onPressed,
-                                        icon: const Icon(
-                                          Icons.favorite,
-                                          color: Colors.redAccent,
-                                        ))
+                                    onPressed != null
+                                        ? IconButton(
+                                            onPressed: onPressed,
+                                            icon: const Icon(
+                                              Icons.favorite,
+                                              color: Colors.redAccent,
+                                            ),
+                                          )
+                                        : const SizedBox()
                                   ],
                                 ),
                                 Text(
