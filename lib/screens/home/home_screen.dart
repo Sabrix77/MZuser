@@ -41,25 +41,25 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
   @override
   Widget build(BuildContext context) {
     var mainProvider = Provider.of<MainProvider>(context);
-    print('=====================>${mainProvider.user?.role}');
-
+    print('==============>${mainProvider.user?.isAdmin}');
     print('===========IM IN HOME Screen');
-    return RefreshIndicator(
-      onRefresh: () async {
-        viewModel.getAllConfirmedProducts();
-      },
-      child: ChangeNotifierProvider(
-        create: (_) => viewModel,
+    return ChangeNotifierProvider(
+      create: (_) => viewModel,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          viewModel.getAllConfirmedProducts();
+        },
         child: Scaffold(
           backgroundColor: Colors.white70,
           appBar: AppBar(
             title: const Text('GoBid'),
             iconTheme: IconThemeData(color: Colors.blue),
           ),
-          drawer: mainProvider.user?.role == 'admin' ? DrawerItem() : null,
+          drawer: mainProvider.user?.isAdmin == true ? DrawerItem() : null,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -75,36 +75,36 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                               .textTheme
                               .headline5!
                               .copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                         ),
-                        Consumer<HomeViewModel>(
-                          builder: (_, homeViewModel, __) {
-                            return SizedBox(
-                              width: double.infinity,
-                              height: 130,
-                              child: ListView.separated(
-                                itemCount: categories.length,
-                                scrollDirection: Axis.horizontal,
-                                separatorBuilder: (context, index) =>
+                        SizedBox(
+                          width: double.infinity,
+                          height: 130,
+                          child: ListView.separated(
+                            itemCount: categories.length,
+                            scrollDirection: Axis.horizontal,
+                            separatorBuilder: (context, index) =>
                                 const SizedBox(width: 10),
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      viewModel
-                                          .setCategory(categories[index].id);
-                                      viewModel.getProductsListByCategory(
-                                          categories[index].id);
-                                    },
-                                    child: HomeCategoryItem(
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  // viewModel
+                                  //     .getProductsListByCategory(categories[index].id);
+                                  viewModel.getProductsListByCategory(
+                                      categories[index].id);
+                                },
+                                child: Consumer<HomeViewModel>(
+                                  builder: (_, homeVM, __) {
+                                    return HomeCategoryItem(
                                         category: categories[index],
                                         selectedCategory:
-                                        homeViewModel.selectedCategory),
-                                  );
-                                },
-                              ),
-                            );
-                          },
+                                            homeVM.selectedCategory);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -142,7 +142,7 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                         }
                         if (homeViewModel.products!.isEmpty) {
                           //change this ui
-                          return Center(
+                          return const Center(
                             child: Text('It seem that No products yet'),
                           );
                         }
@@ -152,7 +152,7 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20,
@@ -163,8 +163,8 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                               onTap: () {
                                 Navigator.of(context, rootNavigator: true)
                                     .pushNamed(ProductDetails.routeName,
-                                        arguments:
-                                            homeViewModel.products![index].id);
+                                    arguments:
+                                    homeViewModel.products![index].id);
                               },
                               child: HomeProductItem(
                                   homeViewModel.products![index]),

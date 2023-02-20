@@ -7,23 +7,6 @@ class HomeViewModel extends BaseViewModel<HomeNavigator> {
   // String? errorMessage;
   String? selectedCategory;
 
-  // Stream<List<Product>> productStream() {
-  //   print('-------getProducts------$selectedCategory');
-  //
-  //   return  FirebaseUtils.instance.collectionStream(
-  //     path: FirebasePaths.productsPath,
-  //     queryBuilder: (query){
-  //       if(selectedCategory!=null){
-  //       return query.where('category',isEqualTo: selectedCategory);
-  //       }
-  //       return query.where('available',isEqualTo: false);
-  //     },
-  //     builder: (data, docId) =>
-  //       Product.fromJson(data!, docId)
-  //
-  //
-  //   );
-  // }
   List<Product>? products;
 
   void getAllConfirmedProducts() async {
@@ -38,6 +21,7 @@ class HomeViewModel extends BaseViewModel<HomeNavigator> {
   void getProductsListByCategory(String category) async {
     try {
       products = await DatabaseUtils.getProductsListByCategory(category);
+      selectedCategory = category;
       print('=============getProductsListByCategory${products?.length}');
     } catch (e) {
       print('=============$e');
@@ -45,10 +29,10 @@ class HomeViewModel extends BaseViewModel<HomeNavigator> {
     notifyListeners();
   }
 
-  void setCategory(String category) {
-    selectedCategory = category;
-    print('-------set Cat------$selectedCategory');
-
-    notifyListeners();
-  }
+// void setCategory(String category) {
+//   selectedCategory = category;
+//   print('-------set Cat------$selectedCategory');
+//
+//   notifyListeners();
+// }
 }

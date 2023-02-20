@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/screens/layout/home_layout.dart';
 import 'package:mzady/screens/login/login_navigator.dart';
@@ -26,6 +27,7 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
     //مهم
     super.initState();
     viewModel.navigator = this;
+    FlutterNativeSplash.remove();
   }
 
   @override

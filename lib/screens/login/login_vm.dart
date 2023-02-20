@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/screens/login/login_navigator.dart';
 import 'package:mzady/services/auth_manager.dart';
@@ -15,10 +16,13 @@ class LoginViewModel extends BaseViewModel<LoginNavigator> {
       //saving to fire store;
       navigator!.hideDialog();
       navigator!.navigateToHome();
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       print('cant login');
       navigator!.hideDialog();
       navigator!.showMessage(AppStrings.youCantLogin, AppStrings.ok);
+    } catch (e) {
+      navigator!.hideDialog();
+      navigator!.showMessage(AppStrings.someThingWentWrong, AppStrings.ok);
     }
   }
 

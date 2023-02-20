@@ -7,6 +7,7 @@ import 'package:mzady/screens/settings/settings_sections/history_uploaded.dart';
 import 'package:mzady/screens/settings/settings_sections/history_winning/history_winning.dart';
 import 'package:mzady/screens/settings/settings_sections/language_section.dart';
 import 'package:mzady/screens/settings/settings_sections/logout_section.dart';
+import 'package:mzady/screens/settings/settings_sections/messages/messages_screen.dart';
 import 'package:mzady/screens/settings/settings_sections/style_section.dart';
 import 'package:mzady/screens/settings/settings_sections/update_account_info/update_account_info.dart';
 
@@ -34,6 +35,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: HeaderInfoSection(),
               ),
               const UpdateAccountInfo(),
+              const SizedBox(height: 8),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamed(MessagesScreen.routeName);
+                },
+                child: Container(
+                  color: Colors.white,
+                  child: ListTile(
+                    leading: const Icon(Icons.email),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          'Messages',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Icon(Icons.arrow_forward_ios_outlined),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(height: 8),
               HistoryUploaded(),
               const SizedBox(height: 8),

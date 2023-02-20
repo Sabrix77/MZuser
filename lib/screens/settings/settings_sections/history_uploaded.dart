@@ -15,9 +15,6 @@ class HistoryUploaded extends StatefulWidget {
 class _HistoryUploadedState extends State<HistoryUploaded> {
   @override
   Widget build(BuildContext context) {
-    // var mainProvider = Provider.of<MainProvider>(context,listen: false);
-    // print('IM IN HISTORY WINNING');
-    // viewModel.getProductWitchUserWin(mainProvider.firebaseUser!.uid);
 
     return InkWell(
       onTap: () {
@@ -79,11 +76,14 @@ class _UploadedScreenState
               Expanded(
                 child: Consumer<HistoryUploadedViewModel>(
                   builder: (_, uploadedVM, __) {
-                    if (uploadedVM.products.isEmpty) {
+                    if (uploadedVM.products == null) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (uploadedVM.products!.isEmpty) {
                       return const Center(
                         child: Text(
                           // AppStrings.winningListIsEmpty,
-                          'PLA',
+                          'No Items yet',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 18),
                         ),
@@ -96,12 +96,12 @@ class _UploadedScreenState
                     }
                     DateTime endDate;
                     return ListView.separated(
-                      itemCount: uploadedVM.products.length,
+                      itemCount: uploadedVM.products!.length,
                       separatorBuilder: (context, index) =>
-                          const SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       itemBuilder: (context, index) {
                         endDate = DateTime.fromMillisecondsSinceEpoch(
-                            int.parse(uploadedVM.products[index].endDate));
+                            int.parse(uploadedVM.products![index].endDate));
                         return Card(
                           elevation: 8,
                           child: SizedBox(
@@ -112,7 +112,7 @@ class _UploadedScreenState
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Image.network(
-                                  uploadedVM.products[index].imgUrl,
+                                  uploadedVM.products![index].imgUrl,
                                   fit: BoxFit.cover,
                                   width: 120,
                                 ),
@@ -127,14 +127,14 @@ class _UploadedScreenState
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          uploadedVM.products[index].title,
+                                          uploadedVM.products![index].title,
                                           style: const TextStyle(fontSize: 20),
                                         ),
                                         const SizedBox(height: 8),
                                         //Text(endDate.toString().substring(0,10)),
                                         const SizedBox(height: 8),
                                         Text(
-                                            '${uploadedVM.products[index].biggestBid.toString()} LE',
+                                            '${uploadedVM.products![index].biggestBid.toString()} LE',
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                                 fontSize: 18,
@@ -168,12 +168,13 @@ class _UploadedScreenState
 abstract class HistoryUploadedNavigator implements BaseNavigator {}
 
 class HistoryUploadedViewModel extends BaseViewModel<HistoryUploadedNavigator> {
-  List<Product> products = [];
+  List<Product>? products;
+
   String? errorMessage;
 
   void getProductsWitchUserUpload(String userId) async {
     try {
-      products = await DatabaseUtils.getProductsWitchUserWin(userId);
+      products = await DatabaseUtils.getProductsWitchUserUpload(userId);
     } catch (e) {
       errorMessage = AppStrings.someThingWentWrong;
       print('------>ERROR IN HistoryUploadingViewModel:: $e');

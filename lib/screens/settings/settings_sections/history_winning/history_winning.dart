@@ -92,7 +92,12 @@ class _WinningScreenState
               Expanded(
                 child: Consumer<HistoryWinningViewModel>(
                   builder: (_, winningVM, __) {
-                    if (winningVM.products.isEmpty) {
+                    if (winningVM.products == null) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (winningVM.products!.isEmpty) {
                       return const Center(
                         child: Text(
                           AppStrings.winningListIsEmpty,
@@ -108,12 +113,12 @@ class _WinningScreenState
                     }
                     DateTime endDate;
                     return ListView.separated(
-                      itemCount: winningVM.products.length,
+                      itemCount: winningVM.products!.length,
                       separatorBuilder: (context, index) =>
                           const SizedBox(height: 20),
                       itemBuilder: (context, index) {
                         endDate = DateTime.fromMillisecondsSinceEpoch(
-                            int.parse(winningVM.products[index].endDate));
+                            int.parse(winningVM.products![index].endDate));
                         return Card(
                           elevation: 8,
                           child: SizedBox(
@@ -124,7 +129,7 @@ class _WinningScreenState
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Image.network(
-                                  winningVM.products[index].imgUrl,
+                                  winningVM.products![index].imgUrl,
                                   fit: BoxFit.cover,
                                   width: 120,
                                 ),
@@ -139,14 +144,14 @@ class _WinningScreenState
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          winningVM.products[index].title,
+                                          winningVM.products![index].title,
                                           style: const TextStyle(fontSize: 20),
                                         ),
                                         const SizedBox(height: 8),
                                         //Text(endDate.toString().substring(0,10)),
                                         const SizedBox(height: 8),
                                         Text(
-                                            '${winningVM.products[index].biggestBid.toString()} LE',
+                                            '${winningVM.products![index].biggestBid.toString()} LE',
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                                 fontSize: 18,
@@ -175,7 +180,8 @@ class _WinningScreenState
 abstract class HistoryWinningNavigator implements BaseNavigator {}
 
 class HistoryWinningViewModel extends BaseViewModel<HistoryWinningNavigator> {
-  List<Product> products = [];
+  List<Product>? products;
+
   String? errorMessage;
 
   void getProductWitchUserWin(String userId) async {

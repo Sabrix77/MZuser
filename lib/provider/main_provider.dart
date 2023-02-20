@@ -12,6 +12,9 @@ import '../shared/style/app_theme.dart';
 class MainProvider extends ChangeNotifier {
   late User? firebaseUser;
   MyUser? user;
+  bool isAdmin = false;
+
+  // String? adminId;
   ThemeData myTheme = MyThemeData.lightTheme;
 
   ///favorites section
@@ -70,12 +73,26 @@ class MainProvider extends ChangeNotifier {
 
   void initUser() async {
     user = await getCurrentUser();
+    if (user!.isAdmin) {
+      print('---------------->$isAdmin');
+
+      isAdmin = true;
+      print('---------------->$isAdmin');
+      notifyListeners();
+    }
   }
 
   void initUserManually() async {
     firebaseUser = FirebaseAuth.instance.currentUser;
 
     user = await getCurrentUser();
+    if (user!.isAdmin) {
+      print('---------------->$isAdmin');
+
+      isAdmin = true;
+      print('---------------->$isAdmin');
+      notifyListeners();
+    }
   }
 
   ///firebase calling should modified and be in services
@@ -83,8 +100,19 @@ class MainProvider extends ChangeNotifier {
     var currentUser = await FirebaseFirestore.instance
         .doc('${FirebasePaths.usersPath}${firebaseUser!.uid}')
         .get();
-    return MyUser.fromJson(currentUser.data()!, firebaseUser!.uid);
+    return MyUser.fromJson(currentUser.data()!);
   }
+
+  ///getting admin id used for messaging
+//   void getAdminID() async {
+//     var admins = await FirebaseFirestore.instance.collection('users')
+//         .where('isAdmin',isEqualTo: true)
+//         .get();
+//     adminId =admins.docs.first.id;
+//     print('ADMIN ID+++++++++++++$adminId');
+//
+//
+//   }
 
   void changeTheme(ThemeData newTheme) {
     myTheme = newTheme;

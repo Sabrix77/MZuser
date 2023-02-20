@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/screens/favorites/favorites_screen.dart';
 import 'package:mzady/screens/home/home_screen.dart';
@@ -22,9 +23,16 @@ class _HomeLayoutState extends State<HomeLayout> {
       PersistentTabController(initialIndex: 0);
 
   @override
+  void initState() {
+    super.initState();
+    FlutterNativeSplash.remove();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var provider = Provider.of<MainProvider>(context, listen: false);
-    provider.initUserManually();
+    if (provider.user == null) provider.initUserManually();
+    // provider.getAdminID();
     if (provider.isDataLoaded == false) provider.getLocalProducts();
     print('=====Home layout build');
     return Scaffold(

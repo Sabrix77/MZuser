@@ -29,6 +29,8 @@ class AuthManager {
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 

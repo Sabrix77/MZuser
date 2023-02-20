@@ -5,7 +5,7 @@ class MyUser {
   String phone;
   String email;
   String address;
-  String role;
+  bool isAdmin;
 
   // List<String> favProducts;
 
@@ -17,20 +17,20 @@ class MyUser {
     required this.phone,
     // required this.favProducts,
     this.address = 'Egypt,',
-    this.role = 'user',
+    this.isAdmin = false,
   });
 
-  MyUser.fromJson(Map<String, dynamic> json, String docId)
+  MyUser.fromJson(Map<String, dynamic> json)
       : this(
-          id: docId,
-          firstName: json['first_name'],
-          lastName: json['last_name'],
-          email: json['email'],
-          phone: json['phone'],
-          //favProducts: json['favProducts'],
-          address: json['address'],
-          role: json['role'],
-        );
+    id: json['id'],
+    firstName: json['first_name'],
+    lastName: json['last_name'],
+    email: json['email'],
+    phone: json['phone'],
+    //favProducts: json['favProducts'],
+    address: json['address'],
+    isAdmin: json['isAdmin'],
+  );
 
   Map<String, dynamic> toJson() {
     return {
@@ -41,7 +41,7 @@ class MyUser {
       'phone': phone,
       'address': address,
       //  'favProducts': favProducts,
-      'role': role,
+      'isAdmin': isAdmin,
     };
   }
 }
