@@ -13,7 +13,6 @@ class LoginViewModel extends BaseViewModel<LoginNavigator> {
       final credential =
           await AuthManager.logInWithEmailAndPassword(email, password);
 
-      //saving to fire store;
       navigator!.hideDialog();
       navigator!.navigateToHome();
     } on FirebaseAuthException catch (e) {

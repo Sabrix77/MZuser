@@ -48,15 +48,17 @@ class _WaitingProductsListState
             return const Center(child: Text(AppStrings.someThingWentWrong));
           }
           String endDate;
-          Product product;
+          //Product product;
           return ListView.builder(
               itemCount: waitingVM.products!.length,
               itemBuilder: (context, index) {
-                product = waitingVM.products![index];
-                endDate = convertToEndDateFormate(product.endDate);
+                //  product = waitingVM.products![index];
+                endDate =
+                    convertToEndDateFormate(waitingVM.products![index].endDate);
                 return Card(
                   elevation: 5,
-                  margin: EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 8),
@@ -71,13 +73,13 @@ class _WaitingProductsListState
                               children: [
                                 Expanded(
                                   child: Text(
-                                    product.title,
+                                    waitingVM.products![index].title,
                                     style: const TextStyle(fontSize: 20),
                                   ),
                                 ),
                                 Expanded(
                                   child: Image.network(
-                                    product.imgUrl,
+                                    waitingVM.products![index].imgUrl,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -85,17 +87,17 @@ class _WaitingProductsListState
                             ),
                             const SizedBox(height: 10),
                             Text(
-                                'Auction Start With ${product.biggestBid.toString()} LE, and End @ ${endDate}',
-                                overflow: TextOverflow.ellipsis,
+                                'Start With ${waitingVM.products![index].biggestBid.toString()} LE, and End @ ${endDate}',
+                                //overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 8),
                             Container(
                               color: Colors.grey[300],
-                              child: Text(product.category),
+                              child: Text(waitingVM.products![index].category),
                             ),
                             const SizedBox(height: 8),
-                            Text(product.description,
+                            Text(waitingVM.products![index].description,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                     fontSize: 16, color: Colors.black54)),
@@ -107,7 +109,7 @@ class _WaitingProductsListState
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                deleteProduct(product.id);
+                                deleteProduct(waitingVM.products![index].id);
                               },
                               child: Row(
                                 children: const [
@@ -120,7 +122,7 @@ class _WaitingProductsListState
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                updateProduct(product);
+                                updateProduct(waitingVM.products![index]);
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green[400]),
