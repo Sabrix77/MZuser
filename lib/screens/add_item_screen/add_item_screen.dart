@@ -11,6 +11,7 @@ import 'package:mzady/screens/layout/home_layout.dart';
 import 'package:mzady/shared/combonent/custom_text_field.dart';
 import 'package:mzady/shared/combonent/utilis.dart' as utils;
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddItemScreen extends StatefulWidget {
   const AddItemScreen({Key? key}) : super(key: key);
@@ -102,18 +103,18 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
       Step(
         isActive: currentStep >= 0,
         state: currentStep > 0 ? StepState.complete : StepState.indexed,
-        title: const Text('Product Info'),
+        title: Text(AppLocalizations.of(context)!.product_info),
         content: firstStepContent(),
       ),
       Step(
         isActive: currentStep >= 1,
         state: currentStep > 1 ? StepState.complete : StepState.indexed,
-        title: const Text('Date'),
+        title:  Text(AppLocalizations.of(context)!.date),
         content: secondStepContent(),
       ),
       Step(
         isActive: currentStep >= 2,
-        title: const Text('Image'),
+        title: Text(AppLocalizations.of(context)!.image),
         content: thirdStepContent(),
       ),
     ];
@@ -173,9 +174,9 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          'Select Your Auction Date : ',
-          style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+         Text(
+          AppLocalizations.of(context)!.select_your_auction_date,
+          style:const TextStyle(fontSize: 18, color: Colors.blueAccent),
         ),
         const SizedBox(height: 16),
         InkWell(
@@ -205,7 +206,7 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
           const SizedBox(height: 10),
           CustomTextField(
             controller: _titleController,
-            label: 'Product Name',
+            label: AppLocalizations.of(context)!.product_name,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Your item must have a name';
@@ -216,7 +217,7 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
           const SizedBox(height: 16),
           CustomTextField(
             controller: _descriptionController,
-            label: 'Description',
+            label: AppLocalizations.of(context)!.description,
             maxLines: 2,
             validator: (value) {
               if (value!.isEmpty) {
@@ -228,7 +229,7 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
           const SizedBox(height: 16),
           CustomTextField(
             controller: _priceController,
-            label: 'Price',
+            label: AppLocalizations.of(context)!.price,
             textInputType: TextInputType.number,
             validator: (value) {
               if (value!.isEmpty) {
@@ -240,7 +241,7 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
           const SizedBox(height: 16),
           CustomTextField(
             controller: _weightController,
-            label: 'Product Weight',
+            label: AppLocalizations.of(context)!.product_weight,
             textInputType: TextInputType.number,
             validator: (value) {
               return null;
@@ -250,7 +251,7 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
           Row(
             children: [
               Text(
-                'Category',
+                AppLocalizations.of(context)!.category,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(width: 10),
@@ -321,7 +322,7 @@ class _AddItemScreenState extends BaseView<AddItemScreen, AddItemViewModel>
         price: int.parse(_priceController.text),
         weight: _weightController.text,
         category: dropDownValue.toLowerCase(),
-        endDate: auctionDate.millisecondsSinceEpoch.toString(),
+        endDate: DateUtils.dateOnly(auctionDate).millisecondsSinceEpoch.toString(),
         sellerId: userid,
         imgFile: myImage);
   }

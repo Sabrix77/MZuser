@@ -2,7 +2,7 @@ import 'package:mzady/base.dart';
 import 'package:mzady/model/product.dart';
 import 'package:mzady/screens/search/search_navigator.dart';
 import 'package:mzady/services/database_utils.dart';
-import 'package:mzady/shared/app_strings.dart';
+import 'package:mzady/shared/constants/app_strings.dart';
 
 class SearchViewModel extends BaseViewModel<SearchNavigator> {
   List<Product>? products;
@@ -11,7 +11,7 @@ class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
   void getAllProducts() async {
     try {
-      products = await DatabaseUtils.getSelectedProductsList(confirmed: true);
+      products = await DatabaseUtils.getConfirmedProductsList();
 
       for (int i = 0; i < products!.length; i++) {
         products![i].title = products![i].title.toLowerCase();

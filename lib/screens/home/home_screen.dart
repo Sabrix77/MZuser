@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/model/category.dart';
 import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/screens/home/home_navigator.dart';
 import 'package:mzady/screens/home/home_vm.dart';
-import 'package:mzady/screens/home/sections/drawer_item.dart';
 import 'package:mzady/screens/home/sections/home_category_item.dart';
 import 'package:mzady/screens/home/sections/home_product_item.dart';
 import 'package:mzady/shared/combonent/shimmer_skelton.dart';
@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../product_details/product_details.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
   void initState() {
     super.initState();
     viewModel.navigator = this;
-    viewModel.getAllConfirmedProducts();
+    //viewModel.getAllConfirmedProducts();
   }
 
   @override
@@ -43,6 +44,8 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
     var mainProvider = Provider.of<MainProvider>(context);
     print('==============>${mainProvider.user?.isAdmin}');
     print('===========IM IN HOME Screen');
+    viewModel.getAllConfirmedProducts();
+
     return ChangeNotifierProvider(
       create: (_) => viewModel,
       child: RefreshIndicator(
@@ -50,12 +53,23 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
           viewModel.getAllConfirmedProducts();
         },
         child: Scaffold(
-          backgroundColor: Colors.white70,
           appBar: AppBar(
             title: const Text('GoBid'),
-            iconTheme: IconThemeData(color: Colors.blue),
+            iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onSurface),
+
           ),
-          drawer: mainProvider.user?.isAdmin == true ? DrawerItem() : null,
+          // drawer: kIsWeb? Drawer(
+          //   child: Column(
+          //     children: [
+          //       Container(
+          //         height: 200,
+          //         child: Image.asset('assets/images/logo.jpg',fit: BoxFit.contain,),
+          //       ),
+          //       SizedBox(height: 20),
+          //       CustomBodyDrawer(),
+          //     ],
+          //   ),
+          // ):null,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SingleChildScrollView(
@@ -70,13 +84,11 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          'Categories',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5!
-                              .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                          AppLocalizations.of(context)!.categories,
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         SizedBox(
                           width: double.infinity,
@@ -114,9 +126,10 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Products',
+                        AppLocalizations.of(context)!.products,
                         style: Theme.of(context).textTheme.headline5!.copyWith(
-                            fontWeight: FontWeight.bold, color: Colors.black),
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                       IconButton(
                           onPressed: () {
@@ -129,50 +142,43 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                               : const Icon(Icons.dashboard))
                     ],
                   ),
-                  Visibility(
-                    visible: isGridview,
-                    replacement: SizedBox(
-                      width: double.infinity,
-                      child: testWidget(),
-                    ),
-                    child: Consumer<HomeViewModel>(
-                      builder: (_, homeViewModel, __) {
-                        if (homeViewModel.products == null) {
-                          return showHomeProductShimmer();
-                        }
-                        if (homeViewModel.products!.isEmpty) {
-                          //change this ui
-                          return const Center(
-                            child: Text('It seem that No products yet'),
-                          );
-                        }
-
-                        return GridView.builder(
-                          itemCount: homeViewModel.products!.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                            childAspectRatio: .75,
-                          ),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pushNamed(ProductDetails.routeName,
-                                    arguments:
-                                    homeViewModel.products![index].id);
-                              },
-                              child: HomeProductItem(
-                                  homeViewModel.products![index]),
-                            );
-                          },
+                  Consumer<HomeViewModel>(
+                    builder: (_, homeViewModel, __) {
+                      if (homeViewModel.products == null) {
+                        return showHomeProductShimmer();
+                      }
+                      if (homeViewModel.products!.isEmpty) {
+                        //change this ui
+                        return const Center(
+                          child: Text('It seem that No products yet'),
                         );
-                      },
-                    ),
+                      }
+                      return GridView.builder(
+                        itemCount: homeViewModel.products!.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          // crossAxisCount: isGridview ? 2 : 1,
+                          crossAxisCount: isGridview ? 2:1,//kIsWeb ?5:2 : kIsWeb?3:1,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 20,
+                          // childAspectRatio: isGridview ? .75 : 1.2,
+                          childAspectRatio: isGridview ? .75 : 1.2,
+                        ),
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              Navigator.of(context, rootNavigator: true)
+                                  .pushNamed(ProductDetails.routeName,
+                                      arguments:
+                                          homeViewModel.products![index].id);
+                            },
+                            child:
+                                HomeProductItem(homeViewModel.products![index]),
+                          );
+                        },
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -186,11 +192,11 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
 
   Widget showHomeProductShimmer() {
     return GridView.builder(
-      itemCount: 6,
+      itemCount: 10,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+        crossAxisCount:  kIsWeb ?5:2 ,
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
         childAspectRatio: .75,
@@ -222,7 +228,7 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.black45),
+                        border: Border.all(width: 1),
                         borderRadius: BorderRadius.circular(12),
                         color: const Color(0xff1A524F4F),
                       ),
@@ -232,13 +238,15 @@ class _HomeScreenState extends BaseView<HomeScreen, HomeViewModel>
                       right: 4,
                       child: InkWell(
                         child: Container(
-                          width: 50,
-                          height: 50,
+                          padding: EdgeInsets.all(12),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.white,
-                              border: Border.all(color: Colors.black12)),
-                          child: const Icon(Icons.favorite_border_outlined),
+                              border: Border.all()),
+                          child: const Icon(
+                            Icons.favorite_border_outlined,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),

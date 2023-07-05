@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mzady/screens/manage_products/mange_products.dart';
 
 class DrawerItem extends StatelessWidget {
   const DrawerItem({Key? key}) : super(key: key);
@@ -35,8 +34,8 @@ class DrawerItem extends StatelessWidget {
                   onTap: () {
                     //for deleting drawer
                     // and remove <- back to screen cause it wasnt refresh data
-                    Navigator.of(context, rootNavigator: true)
-                        .pushReplacementNamed(ManageProductsScreen.routeName);
+                    // Navigator.of(context, rootNavigator: true)
+                    //     .pushReplacementNamed(ManageProductsScreen.routeName);
                     // Navigator.pushNamed(context, ManageProductsScreen.routeName);
                   },
                 ),

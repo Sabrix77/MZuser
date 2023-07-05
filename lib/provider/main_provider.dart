@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mzady/model/my_user.dart';
 import 'package:mzady/shared/constants/firebase_constants.dart';
@@ -12,10 +11,12 @@ import '../shared/style/app_theme.dart';
 class MainProvider extends ChangeNotifier {
   late User? firebaseUser;
   MyUser? user;
-  bool isAdmin = false;
 
-  // String? adminId;
+  /// theme;
   ThemeData myTheme = MyThemeData.lightTheme;
+
+  /// language
+  String language = 'en';
 
   ///favorites section
   List<LocalProduct> localProducts = [];
@@ -73,26 +74,16 @@ class MainProvider extends ChangeNotifier {
 
   void initUser() async {
     user = await getCurrentUser();
-    if (user!.isAdmin) {
-      print('---------------->$isAdmin');
 
-      isAdmin = true;
-      print('---------------->$isAdmin');
-      notifyListeners();
-    }
   }
 
   void initUserManually() async {
     firebaseUser = FirebaseAuth.instance.currentUser;
 
     user = await getCurrentUser();
-    if (user!.isAdmin) {
-      print('---------------->$isAdmin');
 
-      isAdmin = true;
-      print('---------------->$isAdmin');
-      notifyListeners();
-    }
+    notifyListeners();
+
   }
 
   ///firebase calling should modified and be in services
@@ -104,18 +95,13 @@ class MainProvider extends ChangeNotifier {
   }
 
   ///getting admin id used for messaging
-//   void getAdminID() async {
-//     var admins = await FirebaseFirestore.instance.collection('users')
-//         .where('isAdmin',isEqualTo: true)
-//         .get();
-//     adminId =admins.docs.first.id;
-//     print('ADMIN ID+++++++++++++$adminId');
-//
-//
-//   }
 
   void changeTheme(ThemeData newTheme) {
     myTheme = newTheme;
+    notifyListeners();
+  }
+  void changeLanguage(String newLanguage){
+    language=newLanguage;
     notifyListeners();
   }
 }

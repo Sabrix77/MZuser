@@ -5,7 +5,7 @@ import 'package:mzady/screens/register/register_navigator.dart';
 import 'package:mzady/services/generic_firebase_utils.dart';
 
 import '../../services/auth_manager.dart';
-import '../../shared/app_strings.dart';
+import '../../shared/constants/app_strings.dart';
 import '../../shared/constants/firebase_constants.dart';
 
 class RegisterViewModel extends BaseViewModel<RegisterNavigator> {

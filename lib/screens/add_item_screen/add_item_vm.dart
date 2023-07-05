@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:mzady/base.dart';
 import 'package:mzady/screens/add_item_screen/add_item_navigator.dart';
 import 'package:mzady/services/generic_firebase_utils.dart';
-import 'package:mzady/shared/app_strings.dart';
+import 'package:mzady/shared/constants/app_strings.dart';
 
 import '../../model/product.dart';
 import '../../services/database_utils.dart';
@@ -37,12 +37,14 @@ class AddItemViewModel extends BaseViewModel<AddItemNavigator> {
           title: title,
           description: description,
           price: price,
-          biggestBid: price,
+          biggestBid: [price],
           imgUrl: imgUrl,
           category: category,
           endDate: endDate,
           sellerId: sellerId,
-          weight: weight);
+          weight: weight,
+          winnerID: [sellerId],
+      );
 
       navigator!.showLoading(content: AppStrings.savingDetails);
       await DatabaseUtils.setProductToFirestore(product);

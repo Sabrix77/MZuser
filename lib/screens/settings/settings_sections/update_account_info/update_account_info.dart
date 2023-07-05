@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/model/my_user.dart';
 import 'package:mzady/provider/main_provider.dart';
@@ -48,6 +49,8 @@ class _UpdateAccountInfoState
 
   @override
   Widget build(BuildContext context) {
+    var provider=Provider.of<MainProvider>(context);
+    //refactor
     MyUser user = Provider.of<MainProvider>(context).user!;
     User fireUser = Provider.of<MainProvider>(context).firebaseUser!;
 
@@ -58,7 +61,7 @@ class _UpdateAccountInfoState
             builder: (context) {
               return SingleChildScrollView(
                 child: AlertDialog(
-                  title: const Text('Update Account Info'),
+                  title: Text(AppLocalizations.of(context)!.update_account_info),
                   titleTextStyle: Theme.of(context).textTheme.titleLarge,
                   content: Form(
                     key: _formKey,
@@ -66,7 +69,7 @@ class _UpdateAccountInfoState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 12),
-                        Text('First Name:',
+                        Text(AppLocalizations.of(context)!.first_name,
                             style: Theme.of(context)
                                 .textTheme
                                 .caption!
@@ -78,7 +81,7 @@ class _UpdateAccountInfoState
                           hint: user.firstName,
                         ),
                         const SizedBox(height: 12),
-                        Text('Last Name: ',
+                        Text(AppLocalizations.of(context)!.last_name,
                             style: Theme.of(context)
                                 .textTheme
                                 .caption!
@@ -90,7 +93,7 @@ class _UpdateAccountInfoState
                           hint: user.lastName,
                         ),
                         const SizedBox(height: 12),
-                        Text('Email:',
+                        Text(AppLocalizations.of(context)!.email,
                             style: Theme.of(context)
                                 .textTheme
                                 .caption!
@@ -102,7 +105,7 @@ class _UpdateAccountInfoState
                           hint: user.email,
                         ),
                         const SizedBox(height: 12),
-                        Text('Phone:',
+                        Text(AppLocalizations.of(context)!.phone,
                             style: Theme.of(context)
                                 .textTheme
                                 .caption!
@@ -115,7 +118,7 @@ class _UpdateAccountInfoState
                           hint: user.phone,
                         ),
                         const SizedBox(height: 12),
-                        Text('Address:',
+                        Text(AppLocalizations.of(context)!.address,
                             style: Theme.of(context)
                                 .textTheme
                                 .caption!
@@ -134,7 +137,7 @@ class _UpdateAccountInfoState
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Cancel'),
+                      child:  Text(AppLocalizations.of(context)!.cancel),
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -153,9 +156,10 @@ class _UpdateAccountInfoState
                             newPhone: _phoneController.text,
                             newAddress: _addressController.text,
                           );
+                          provider.initUserManually();
                         }
                       },
-                      child: const Text('Ok'),
+                      child: Text(AppLocalizations.of(context)!.ok),
                     ),
                   ],
                 ),
@@ -163,17 +167,17 @@ class _UpdateAccountInfoState
             });
       },
       child: Container(
-        color: Colors.white,
+        color:Theme.of(context).colorScheme.background,
         child: ListTile(
-          leading: const Icon(Icons.person),
+          leading: const Icon(Icons.person,color: Colors.grey),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children:  [
               Text(
-                'Update Profile',
-                style: TextStyle(fontSize: 18),
+                AppLocalizations.of(context)!.update_profile,
+                style: TextStyle(fontSize: 18,color: Theme.of(context).colorScheme.onSurface),
               ),
-              Icon(Icons.arrow_forward_ios_outlined),
+              Icon(Icons.arrow_forward_ios_outlined,color: Colors.grey),
             ],
           ),
         ),

@@ -65,4 +65,9 @@ class AppStrings {
   /// images
   static const String demoImgUrl =
       'https://thumbs.dreamstime.com/b/opened-box-icon-cartoon-style-unboxing-143587979.jpg';
+
+///about us
+  static const String aboutUsTextSection1='Go Bid هو مزاد عبر الإنترنت عبارة عن منصة الكترونية عبر الإنترنت يقوم فيها المستخدمون بالمزايدات للفوز بالمعروضات، وكل عطاء يتم عرضه للمزاد يكون متاح لفترة محددة من الوقت والمزاد يكون متاح لكافة المستخدمين من أي مكان .';
+  static const String aboutUsTextSection2='  برنامج Go Bid للمزادات يعتبر من الحلول التكنولوجية المبتكرة لإطلاق مشاريع المزادات عبر الانترنت بما يناسب كافة انواع الاعمال المختلفة';
+  static const String aboutUsTextSection3='  وبعد سنوات من العمل الجاد مع عملائنا في جميع أنحاء العالم اكتسبنا خبرة واسعة مكنتنا من تقديم حلول برمجية متميزة للتجارة الالكترونية لمنصات المزادات عبر النترنت .';
 }

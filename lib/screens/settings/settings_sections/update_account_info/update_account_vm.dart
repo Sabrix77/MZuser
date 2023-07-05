@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/services/generic_firebase_utils.dart';
-import 'package:mzady/shared/app_strings.dart';
+import 'package:mzady/shared/constants/app_strings.dart';
 import 'package:mzady/shared/constants/firebase_constants.dart';
 
 import '../../../../model/my_user.dart';

@@ -6,8 +6,8 @@ import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/screens/favorites/components/product_card.dart';
 import 'package:mzady/screens/search/search_navigator.dart';
 import 'package:mzady/screens/search/search_vm.dart';
-import 'package:mzady/shared/app_strings.dart';
 import 'package:mzady/shared/combonent/custom_text_field.dart';
+import 'package:mzady/shared/constants/app_strings.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -36,18 +36,16 @@ class _SearchScreenState extends BaseView<SearchScreen, SearchViewModel>
     var mainProvider = Provider.of<MainProvider>(context);
 
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white70,
-        body: Column(
+      child: Column(
           children: [
+            SizedBox(height: 20),
             Container(
-              // color: Color(0xfffc6e51),
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+              padding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Center(
                 child: CustomTextField(
                   controller: _searchController,
-                  borderColor: Colors.black,
                   onChange: (value) {
                     if (value.isNotEmpty) {
                       viewModel.filterProductListByTitle(value);
@@ -57,38 +55,42 @@ class _SearchScreenState extends BaseView<SearchScreen, SearchViewModel>
                   },
                   suffixIcon: const Icon(
                     Icons.search,
-                    color: Colors.black,
                   ),
                   hint: 'Search for specific item',
                   validator: (value) => null,
                 ),
               ),
             ),
-            ChangeNotifierProvider(
-              create: (context) => viewModel,
-              child: Consumer<SearchViewModel>(
-                builder: (_, searchVM, __) {
-                  if (searchVM.filteredProducts.isEmpty) {
-                    //refactor this
-                    return SizedBox(
-                        width: MediaQuery.of(context).size.width * .6,
-                        child: Image.asset(
-                          'assets/images/shopingcar.png',
-                          fit: BoxFit.fill,
-                          opacity: const AlwaysStoppedAnimation(.5),
-                        ));
-                  }
+            Expanded(
+              child: ChangeNotifierProvider(
+                create: (context) => viewModel,
+                child: Consumer<SearchViewModel>(
+                  builder: (_, searchVM, __) {
+                    if (searchVM.filteredProducts.isEmpty) {
+                      //refactor this
+                      return ListView(
+                        padding: EdgeInsets.symmetric(horizontal: 60),
+                        children: [
+                          SizedBox(height: 100),
+                          SizedBox(
+                              child: Image.asset(
+                                'assets/images/searching.png',
+                                // fit: BoxFit.fill,
+                                opacity: const AlwaysStoppedAnimation(.5),
+                              )),
+                        ],
+                      );
+                    }
 
-                  if (searchVM.errorMessage != null) {
-                    return const Center(
-                      child: Text(AppStrings.someThingWentWrong),
-                    );
-                  }
-                  Product product;
-                  LocalProduct asLocalProduct;
+                    if (searchVM.errorMessage != null) {
+                      return const Center(
+                        child: Text(AppStrings.someThingWentWrong),
+                      );
+                    }
+                    Product product;
+                    LocalProduct asLocalProduct;
 
-                  return Expanded(
-                    child: ListView.builder(
+                    return ListView.builder(
                         itemCount: searchVM.filteredProducts.length,
                         itemBuilder: (context, index) {
                           product = searchVM.filteredProducts[index];
@@ -99,17 +101,20 @@ class _SearchScreenState extends BaseView<SearchScreen, SearchViewModel>
                             imageUrl: product.imgUrl,
                             description: product.description,
                           );
-                          return ProductCard(
-                            localProduct: asLocalProduct,
+                          return Padding(
+                            padding:EdgeInsets.symmetric(horizontal: 20),
+                            child: ProductCard(
+                              localProduct: asLocalProduct,
+                            ),
                           );
-                        }),
-                  );
-                },
+                        });
+                  },
+                ),
               ),
             )
           ],
-        ),
-      ),
+        )
+
     );
   }
 }

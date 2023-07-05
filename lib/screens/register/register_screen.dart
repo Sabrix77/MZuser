@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/screens/layout/home_layout.dart';
 import 'package:mzady/screens/login/login_screen.dart';
@@ -37,7 +38,8 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE5E5E5),
+
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Form(
@@ -48,7 +50,7 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Register',
+                    AppLocalizations.of(context)!.register,
                     style: Theme.of(context).textTheme.headline3,
                     textAlign: TextAlign.left,
                   ),
@@ -60,12 +62,12 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                           controller: _firstNameController,
                           validator: (value) {
                             if (value!.isEmpty || value.length < 3) {
-                              return 'Please Enter First Name';
+                              return AppLocalizations.of(context)!.enter_valid_first_name;
                             }
                             return null;
                           },
-                          hint: 'Enter your First Name',
-                          label: 'First Name',
+                          hint: AppLocalizations.of(context)!.enter_first_name,
+                          label: AppLocalizations.of(context)!.first_name,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -74,12 +76,12 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                           controller: _lastNameController,
                           validator: (value) {
                             if (value!.isEmpty || value.length < 3) {
-                              return 'Please Enter Last Name';
+                              return AppLocalizations.of(context)!.enter_valid_last_name;
                             }
                             return null;
                           },
-                          hint: 'Enter your Last Name',
-                          label: 'Last Name',
+                          hint: AppLocalizations.of(context)!.enter_last_name,
+                          label: AppLocalizations.of(context)!.last_name,
                         ),
                       ),
                     ],
@@ -92,12 +94,12 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value!);
                       if (value.isEmpty || emailNotValid) {
-                        return 'Please Enter Valid Email';
+                        return AppLocalizations.of(context)!.enter_valid_mail;
                       }
                       return null;
                     },
-                    hint: 'Enter your Email',
-                    label: 'Email',
+                    hint: AppLocalizations.of(context)!.enter_mail,
+                    label: AppLocalizations.of(context)!.email,
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
@@ -105,24 +107,24 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                     textInputType: TextInputType.number,
                     validator: (value) {
                       if (value!.isEmpty || value.length != 11) {
-                        return 'Please Enter Valid Phone Number';
+                        return AppLocalizations.of(context)!.enter_valid_phone_number;
                       }
                       return null;
                     },
-                    hint: 'Enter your Phone number',
-                    label: 'Phone Number',
+                    hint: AppLocalizations.of(context)!.enter_phone_number,
+                    label: AppLocalizations.of(context)!.phone_number,
                   ),
                   const SizedBox(height: 16),
                   CustomTextField(
                     controller: _passwordController,
                     validator: (value) {
                       if (value!.isEmpty || value.length < 6) {
-                        return ' Password Should be Strong';
+                        return AppLocalizations.of(context)!.password_is_week;
                       }
                       return null;
                     },
-                    hint: 'Enter your Password',
-                    label: 'Password',
+                    hint: AppLocalizations.of(context)!.enter_password,
+                    label: AppLocalizations.of(context)!.password,
                     obscureText: isObscure,
                     suffixIcon: IconButton(
                         onPressed: () {
@@ -137,15 +139,15 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                     controller: _confirmController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please Confirm your Password';
+                        return AppLocalizations.of(context)!.enter_valid_confirm_password;
                       }
                       if (value != _passwordController.text) {
-                        return 'Your Password Cant be Confirmed, try again';
+                        return AppLocalizations.of(context)!.password_not_confirmed;
                       }
                       return null;
                     },
-                    hint: 'Confirm your Password',
-                    label: 'Confirm Password',
+                    hint: AppLocalizations.of(context)!.enter_confirm_password,
+                    label: AppLocalizations.of(context)!.confirm_password,
                     obscureText: isConfirmObscure,
                     suffixIcon: IconButton(
                         onPressed: () {
@@ -160,20 +162,20 @@ class _RegisterScreenState extends BaseView<RegisterScreen, RegisterViewModel>
                     onTap: () {
                       validForm();
                     },
-                    text: 'Register',
+                    text: AppLocalizations.of(context)!.register_btn,
                   ),
                   const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Do you have an account ? '),
+                       Text(AppLocalizations.of(context)!.do_you_have_account),
                       InkWell(
                           onTap: () {
                             Navigator.pushReplacementNamed(
                                 context, LoginScreen.routeName);
                           },
-                          child: const Text(
-                            'Login now!',
+                          child:  Text(
+                            AppLocalizations.of(context)!.login_now,
                             style: TextStyle(
                                 fontSize: 16, color: Colors.blueAccent),
                           )),

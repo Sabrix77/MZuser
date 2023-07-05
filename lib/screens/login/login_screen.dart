@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/screens/layout/home_layout.dart';
@@ -7,6 +8,7 @@ import 'package:mzady/screens/login/login_vm.dart';
 import 'package:mzady/screens/register/register_screen.dart';
 import 'package:mzady/shared/combonent/custom_text_field.dart';
 import 'package:mzady/shared/combonent/main_button.dart';
+
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = 'loginScreen';
@@ -34,7 +36,8 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFFE5E5E5),
+        // backgroundColor: const Color(0xFFE5E5E5),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -44,7 +47,7 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Login',
+                    AppLocalizations.of(context)!.login,
                     style: Theme.of(context).textTheme.headline3,
                     textAlign: TextAlign.left,
                   ),
@@ -53,24 +56,24 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
                     controller: emailController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter valid Email';
+                        return AppLocalizations.of(context)!.enter_valid_mail;
                       }
                       return null;
                     },
-                    hint: 'Enter your Email',
-                    label: 'Email',
+                    hint: AppLocalizations.of(context)!.enter_mail,
+                    label: AppLocalizations.of(context)!.email,
                   ),
                   const SizedBox(height: 40),
                   CustomTextField(
                     controller: passwordController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return ' Please enter your password';
+                        return AppLocalizations.of(context)!.enter_valid_password;
                       }
                       return null;
                     },
-                    hint: 'Enter your Password',
-                    label: 'Password',
+                    hint: AppLocalizations.of(context)!.enter_password,
+                    label: AppLocalizations.of(context)!.password,
                     obscureText: isObscure,
                     suffixIcon: IconButton(
                         onPressed: () {
@@ -93,20 +96,20 @@ class _LoginScreenState extends BaseView<LoginScreen, LoginViewModel>
                         passwordController.text,
                       );
                     },
-                    text: 'Login',
+                    text: AppLocalizations.of(context)!.login_btn,
                   ),
                   const SizedBox(height: 60),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Don\'t have an account ? '),
+                       Text(AppLocalizations.of(context)!.dont_have_account),
                       InkWell(
                           onTap: () {
                             Navigator.pushReplacementNamed(
                                 context, RegisterScreen.routeName);
                           },
-                          child: const Text(
-                            'Register now!',
+                          child:  Text(
+                            AppLocalizations.of(context)!.register_now,
                             style: TextStyle(
                                 fontSize: 16, color: Colors.blueAccent),
                           )),

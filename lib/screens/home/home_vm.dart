@@ -11,7 +11,8 @@ class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
   void getAllConfirmedProducts() async {
     try {
-      products = await DatabaseUtils.getSelectedProductsList(confirmed: true);
+      products = await DatabaseUtils.getConfirmedProductsList();
+      products=products!.reversed.toList();
     } catch (e) {
       print('=============$e');
     }
@@ -21,6 +22,7 @@ class HomeViewModel extends BaseViewModel<HomeNavigator> {
   void getProductsListByCategory(String category) async {
     try {
       products = await DatabaseUtils.getProductsListByCategory(category);
+      products=products!.reversed.toList();
       selectedCategory = category;
       print('=============getProductsListByCategory${products?.length}');
     } catch (e) {

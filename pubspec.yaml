@@ -47,6 +47,9 @@ dependencies:
   shimmer: ^2.0.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 
 dev_dependencies:
@@ -74,6 +77,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true # for localization
 
   # To add assets to your application, add an assets section, like this:
   assets:
@@ -92,10 +96,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/cairo/Cairo-SemiBold.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

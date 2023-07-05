@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/services/auth_manager.dart';
 import 'package:provider/provider.dart';
@@ -33,12 +34,12 @@ class LogoutSection extends StatelessWidget {
           ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children:  [
               Text(
-                'Logout',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                AppLocalizations.of(context)!.logout,
+                style: const TextStyle(fontSize: 18, color: Colors.white),
               ),
-              Icon(Icons.arrow_forward_ios_outlined, color: Colors.white),
+             const Icon(Icons.arrow_forward_ios_outlined, color: Colors.white),
             ],
           ),
         ),

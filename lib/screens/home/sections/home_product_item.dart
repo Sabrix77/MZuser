@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mzady/model/local_product.dart';
 import 'package:mzady/model/product.dart';
 import 'package:mzady/provider/main_provider.dart';
-import 'package:mzady/shared/app_strings.dart';
+import 'package:mzady/shared/constants/app_strings.dart';
 import 'package:provider/provider.dart';
 
 class HomeProductItem extends StatefulWidget {
@@ -58,6 +57,7 @@ class _HomeProductItemState extends State<HomeProductItem> {
                     fit: BoxFit.fill,
                   ),
                 ),
+
                 Positioned(
                   top: 4,
                   right: 4,
@@ -98,12 +98,13 @@ class _HomeProductItemState extends State<HomeProductItem> {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: const TextStyle(
+
                       fontSize: 16, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    Text('${widget.product.biggestBid} ${AppStrings.pounds}')
+                    Text('${widget.product.biggestBid.last} ${AppStrings.pounds}')
                   ],
                 ),
                 const SizedBox(height: 12),

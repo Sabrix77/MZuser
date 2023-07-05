@@ -1,16 +1,14 @@
 class Message {
   String id;
   String senderId;
-  String receiverId;
   int timestamp;
   String content;
 
-  // String senderName;
+  //String senderName;
 
   Message({required this.id,
     required this.senderId,
     required this.content,
-    required this.receiverId,
     required this.timestamp});
 
   Message.fromJson(Map<String, dynamic> json)
@@ -18,7 +16,6 @@ class Message {
     id: json['id'],
     content: json['content'],
     senderId: json['senderId'],
-    receiverId: json['receiverId'],
     timestamp: json['timestamp'],
   );
 
@@ -27,9 +24,7 @@ class Message {
       "id": id,
       "content": content,
       "senderId": senderId,
-      "receiverId": receiverId,
       "timestamp": timestamp,
-
     };
   }
 }

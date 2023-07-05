@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/screens/favorites/favorites_screen.dart';
@@ -36,13 +37,14 @@ class _HomeLayoutState extends State<HomeLayout> {
     if (provider.isDataLoaded == false) provider.getLocalProducts();
     print('=====Home layout build');
     return Scaffold(
+      // body: kIsWeb ?HomeScreen():PersistentTabView(
       body: PersistentTabView(
         context,
         controller: _controller,
         screens: _buildScreens(),
         items: _navBarsItems(),
         confineInSafeArea: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         // Default is Colors.white.
         handleAndroidBackButtonPress: true,
         // Default is true.
@@ -54,7 +56,7 @@ class _HomeLayoutState extends State<HomeLayout> {
         // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
         decoration: NavBarDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          colorBehindNavBar: Colors.white,
+          colorBehindNavBar: Theme.of(context).colorScheme.background,
         ),
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,
@@ -95,13 +97,13 @@ class _HomeLayoutState extends State<HomeLayout> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.home),
-        title: ("Home"),
+        title: (AppLocalizations.of(context)!.home),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.search),
-        title: ("Search"),
+        title: (AppLocalizations.of(context)!.search),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -110,19 +112,19 @@ class _HomeLayoutState extends State<HomeLayout> {
           Icons.add,
           color: Colors.white,
         ),
-        title: ("Add"),
+        title: (AppLocalizations.of(context)!.add),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.favorite_border_outlined),
-        title: ("Favorites"),
+        title: (AppLocalizations.of(context)!.favorites),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.profile_circled),
-        title: ("Profile"),
+        title: (AppLocalizations.of(context)!.profile),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

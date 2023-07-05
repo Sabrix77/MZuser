@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mzady/base.dart';
 import 'package:mzady/screens/login/login_navigator.dart';
 import 'package:mzady/services/auth_manager.dart';
-import 'package:mzady/shared/app_strings.dart';
+import 'package:mzady/shared/constants/app_strings.dart';
 
 class LoginViewModel extends BaseViewModel<LoginNavigator> {
   bool isObscure = true;

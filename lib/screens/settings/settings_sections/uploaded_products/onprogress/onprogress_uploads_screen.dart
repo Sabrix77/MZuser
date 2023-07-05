@@ -1,80 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:mzady/base.dart';
+import 'package:mzady/provider/main_provider.dart';
+import 'package:mzady/screens/settings/settings_sections/uploaded_products/uploaded_products_navigator.dart';
+import 'package:mzady/shared/constants/app_strings.dart';
+import 'package:mzady/shared/constants/enums.dart';
 import 'package:provider/provider.dart';
 
-import '../../../base.dart';
-import '../../../model/product.dart';
-import '../../../provider/main_provider.dart';
-import '../../../services/database_utils.dart';
-import '../../../shared/app_strings.dart';
+import '../uploaded_products_vm.dart';
 
-class HistoryUploaded extends StatefulWidget {
+class OnProgressUploadsScreen extends StatefulWidget {
+  const OnProgressUploadsScreen({Key? key}) : super(key: key);
+
   @override
-  State<HistoryUploaded> createState() => _HistoryUploadedState();
+  State<OnProgressUploadsScreen> createState() =>
+      _OnProgressUploadsScreenState();
 }
 
-class _HistoryUploadedState extends State<HistoryUploaded> {
+class _OnProgressUploadsScreenState
+    extends BaseView<OnProgressUploadsScreen, UploadedProductsViewModel>
+    implements UploadedProductsNavigator {
   @override
-  Widget build(BuildContext context) {
-
-    return InkWell(
-      onTap: () {
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed(UploadedScreen.routeName);
-      },
-      child: Container(
-        color: Colors.white,
-        child: ListTile(
-          leading: const Icon(Icons.shopping_cart_sharp),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
-                'Uploaded Products',
-                style: TextStyle(fontSize: 18),
-              ),
-              Icon(Icons.arrow_forward_ios_outlined),
-            ],
-          ),
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    viewModel.navigator = this;
   }
-}
-
-class UploadedScreen extends StatefulWidget {
-  static const String routeName = 'UploadedHistory';
 
   @override
-  State<UploadedScreen> createState() => _UploadedScreenState();
-}
+  UploadedProductsViewModel initViewModel() {
+    return UploadedProductsViewModel();
+  }
 
-class _UploadedScreenState
-    extends BaseView<UploadedScreen, HistoryUploadedViewModel>
-    implements HistoryUploadedNavigator {
   @override
   Widget build(BuildContext context) {
     var mainProvider = Provider.of<MainProvider>(context);
-    viewModel.getProductsWitchUserUpload(mainProvider.firebaseUser!.uid);
+    viewModel.getProductsWitchUserUpload(
+        userId: mainProvider.firebaseUser!.uid,
+        auctionState: AuctionState.confirmed.name);
     return ChangeNotifierProvider(
       create: (_) => viewModel,
       child: Scaffold(
+        //  backgroundColor: mainProvider.myTheme==MyThemeData.lightTheme?Color(0xFFF1EFEF):null,
         body: Padding(
           padding:
-              const EdgeInsets.only(top: 60, right: 10, left: 10, bottom: 20),
+              const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 20),
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Uploaded Products',
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 30),
-              ),
-              const SizedBox(height: 20),
+              //  const SizedBox(height: 20),
               Expanded(
-                child: Consumer<HistoryUploadedViewModel>(
+                child: Consumer<UploadedProductsViewModel>(
                   builder: (_, uploadedVM, __) {
                     if (uploadedVM.products == null) {
                       return const Center(child: CircularProgressIndicator());
@@ -98,7 +73,7 @@ class _UploadedScreenState
                     return ListView.separated(
                       itemCount: uploadedVM.products!.length,
                       separatorBuilder: (context, index) =>
-                      const SizedBox(height: 20),
+                          const SizedBox(height: 20),
                       itemBuilder: (context, index) {
                         endDate = DateTime.fromMillisecondsSinceEpoch(
                             int.parse(uploadedVM.products![index].endDate));
@@ -157,28 +132,5 @@ class _UploadedScreenState
         ),
       ),
     );
-  }
-
-  @override
-  HistoryUploadedViewModel initViewModel() {
-    return HistoryUploadedViewModel();
-  }
-}
-
-abstract class HistoryUploadedNavigator implements BaseNavigator {}
-
-class HistoryUploadedViewModel extends BaseViewModel<HistoryUploadedNavigator> {
-  List<Product>? products;
-
-  String? errorMessage;
-
-  void getProductsWitchUserUpload(String userId) async {
-    try {
-      products = await DatabaseUtils.getProductsWitchUserUpload(userId);
-    } catch (e) {
-      errorMessage = AppStrings.someThingWentWrong;
-      print('------>ERROR IN HistoryUploadingViewModel:: $e');
-    }
-    notifyListeners();
   }
 }

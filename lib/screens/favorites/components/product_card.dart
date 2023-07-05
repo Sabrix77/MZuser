@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mzady/model/local_product.dart';
+import 'package:mzady/provider/main_provider.dart';
 import 'package:mzady/screens/product_details/product_details.dart';
+import 'package:provider/provider.dart';
 
 class ProductCard extends StatelessWidget {
   LocalProduct localProduct;
@@ -11,19 +12,21 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var provider=Provider.of<MainProvider>(context);
+
     return InkWell(
       onTap: () => Navigator.of(context, rootNavigator: true)
           .pushNamed(ProductDetails.routeName, arguments: localProduct.id),
       child: SizedBox(
         width: double.infinity,
-        height: 140,
+        height: 200,
         child: Stack(
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(
-                  height: 130,
+                  height: 180,
                   child: Card(
                     elevation: 6,
                     child: Padding(
@@ -69,8 +72,13 @@ class ProductCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2!
-                                      .copyWith(color: Colors.grey),
+                                      .titleSmall!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall!
+                                              .color!
+                                              .withOpacity(.7)),
                                 ),
                                 const SizedBox(height: 4),
                               ],
@@ -85,11 +93,12 @@ class ProductCard extends StatelessWidget {
             ),
             Positioned(
               bottom: 30,
-              left: 15,
+              left: provider.language=='en'?5:null,
+              right: provider.language=='en'?null:5,
               child: SizedBox(
-                width: 120,
+                width: 130,
                 // color: Colors.red,
-                height: 110,
+                height: 160,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: FadeInImage(
